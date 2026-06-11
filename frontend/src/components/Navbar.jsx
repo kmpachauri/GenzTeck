@@ -1,7 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
-import { Menu, X, ChevronDown } from 'lucide-react';
-import './Navbar.css';
+import { Menu, X, ChevronDown, Zap } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { cn } from '../lib/utils';
 
 const navLinks = [
   { to: '/', label: 'Home' },
@@ -44,102 +45,213 @@ export default function Navbar({ settings }) {
   }, [mobileOpen]);
 
   return (
-    <header className={`navbar ${scrolled ? 'navbar-scrolled' : ''}`}>
-      <div className="container navbar-inner">
+    <header
+      className={cn(
+        'fixed top-0 left-0 right-0 z-[1000] transition-all duration-300',
+        scrolled
+          ? 'glass-strong border-b border-white/[0.08] shadow-[0_4px_30px_rgba(0,0,0,0.5)]'
+          : 'bg-transparent border-b border-transparent'
+      )}
+    >
+      <div className="max-w-[1200px] mx-auto px-6 h-[70px] flex items-center justify-between">
         {/* Logo */}
-        <Link to="/" className="navbar-logo">
-          <span className="navbar-logo-text">Genz<span className="navbar-logo-accent">Teck</span></span>
+        <Link to="/" className="relative z-10 flex items-center gap-2">
+          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-cyan-400 to-purple-500 flex items-center justify-center">
+            <Zap size={16} className="text-white" />
+          </div>
+          <span className="font-heading font-bold text-xl text-white">
+            Genz<span className="text-gradient">Teck</span>
+          </span>
         </Link>
 
         {/* Desktop Nav */}
-        <nav className="navbar-links" aria-label="Main navigation">
+        <nav className="hidden lg:flex items-center gap-1" aria-label="Main navigation">
           {navLinks.map((link) =>
             link.children ? (
               <div
                 key={link.label}
-                className={`navbar-dropdown ${dropdownOpen ? 'open' : ''}`}
+                className="relative"
                 onMouseEnter={() => setDropdownOpen(true)}
                 onMouseLeave={() => setDropdownOpen(false)}
               >
-                <button className="navbar-link navbar-dropdown-trigger" aria-expanded={dropdownOpen} aria-haspopup="true">
+                <button
+                  className={cn(
+                    'flex items-center gap-1 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200',
+                    'text-[#8A8AA0] hover:text-white hover:bg-white/5'
+                  )}
+                  aria-expanded={dropdownOpen}
+                  aria-haspopup="true"
+                >
                   {link.label}
-                  <ChevronDown size={14} className="dropdown-arrow" />
+                  <motion.div animate={{ rotate: dropdownOpen ? 180 : 0 }} transition={{ duration: 0.2 }}>
+                    <ChevronDown size={14} />
+                  </motion.div>
                 </button>
-                <div className="navbar-dropdown-menu" role="menu">
-                  {link.children.map(child => (
-                    <NavLink key={child.to} to={child.to} className="navbar-dropdown-item" role="menuitem">
-                      {child.label}
-                    </NavLink>
-                  ))}
-                </div>
+                <AnimatePresence>
+                  {dropdownOpen && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 8, scale: 0.95 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      exit={{ opacity: 0, y: 8, scale: 0.95 }}
+                      transition={{ duration: 0.15 }}
+                      className="absolute top-full left-0 mt-2 w-44 glass-strong rounded-xl border border-white/[0.08] p-1.5 shadow-card"
+                      role="menu"
+                    >
+                      {link.children.map(child => (
+                        <NavLink
+                          key={child.to}
+                          to={child.to}
+                          className={({ isActive }) => cn(
+                            'flex items-center gap-2 px-3 py-2.5 rounded-lg text-sm transition-all duration-150',
+                            isActive
+                              ? 'text-cyan-400 bg-cyan-400/10'
+                              : 'text-[#8A8AA0] hover:text-white hover:bg-white/5'
+                          )}
+                          role="menuitem"
+                        >
+                          {child.label}
+                        </NavLink>
+                      ))}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </div>
             ) : (
               <NavLink
                 key={link.to}
                 to={link.to}
-                className={({ isActive }) => `navbar-link ${isActive ? 'active' : ''}`}
                 end={link.to === '/'}
+                className={({ isActive }) => cn(
+                  'px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 relative group',
+                  isActive
+                    ? 'text-white'
+                    : 'text-[#8A8AA0] hover:text-white hover:bg-white/5'
+                )}
               >
-                {link.label}
+                {({ isActive }) => (
+                  <>
+                    {link.label}
+                    {isActive && (
+                      <motion.div
+                        layoutId="nav-indicator"
+                        className="absolute inset-0 rounded-lg bg-white/[0.08]"
+                        style={{ zIndex: -1 }}
+                        transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+                      />
+                    )}
+                  </>
+                )}
               </NavLink>
             )
           )}
         </nav>
 
-        {/* CTA */}
-        <div className="navbar-cta">
-          <Link to="/payment" className="btn btn-outline btn-sm">Pay Now</Link>
-          <Link to="/contact" className="btn btn-primary btn-sm">Get Started</Link>
+        {/* Desktop CTA */}
+        <div className="hidden lg:flex items-center gap-3">
+          <Link
+            to="/payment"
+            className="px-4 py-2 rounded-lg text-sm font-medium border border-white/[0.08] text-[#8A8AA0] hover:text-white hover:border-white/20 hover:bg-white/5 transition-all duration-200"
+          >
+            Pay Now
+          </Link>
+          <Link
+            to="/contact"
+            className="px-5 py-2.5 rounded-full text-sm font-semibold bg-gradient-to-r from-cyan-400 to-purple-500 text-white shadow-btn-primary hover:shadow-btn-primary-hover hover:-translate-y-0.5 transition-all duration-200"
+          >
+            Get Started
+          </Link>
         </div>
 
         {/* Mobile Toggle */}
         <button
-          className="navbar-mobile-toggle"
+          className="lg:hidden p-2 rounded-lg border border-white/[0.08] text-[#8A8AA0] hover:text-white hover:bg-white/5 transition-all duration-200"
           onClick={() => setMobileOpen(!mobileOpen)}
           aria-label="Toggle mobile menu"
           aria-expanded={mobileOpen}
           id="mobile-menu-toggle"
         >
-          {mobileOpen ? <X size={24} /> : <Menu size={24} />}
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={mobileOpen ? 'close' : 'open'}
+              initial={{ rotate: -90, opacity: 0 }}
+              animate={{ rotate: 0, opacity: 1 }}
+              exit={{ rotate: 90, opacity: 0 }}
+              transition={{ duration: 0.15 }}
+            >
+              {mobileOpen ? <X size={20} /> : <Menu size={20} />}
+            </motion.div>
+          </AnimatePresence>
         </button>
       </div>
 
       {/* Mobile Menu */}
-      <div className={`navbar-mobile ${mobileOpen ? 'open' : ''}`} role="dialog" aria-label="Mobile navigation">
-        <nav className="navbar-mobile-links">
-          {navLinks.map((link) =>
-            link.children ? (
-              <div key={link.label} className="navbar-mobile-group">
-                <span className="navbar-mobile-group-label">{link.label}</span>
-                {link.children.map(child => (
+      <AnimatePresence>
+        {mobileOpen && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
+            className="lg:hidden overflow-hidden glass-strong border-t border-white/[0.08]"
+            role="dialog"
+            aria-label="Mobile navigation"
+          >
+            <nav className="px-6 py-4 flex flex-col gap-1">
+              {navLinks.map((link) =>
+                link.children ? (
+                  <div key={link.label} className="py-2">
+                    <p className="text-xs font-semibold text-[#5A5A7A] uppercase tracking-wider px-3 mb-2">
+                      {link.label}
+                    </p>
+                    {link.children.map(child => (
+                      <NavLink
+                        key={child.to}
+                        to={child.to}
+                        className={({ isActive }) => cn(
+                          'block px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-150',
+                          isActive
+                            ? 'text-cyan-400 bg-cyan-400/10'
+                            : 'text-[#8A8AA0] hover:text-white hover:bg-white/5'
+                        )}
+                      >
+                        {child.label}
+                      </NavLink>
+                    ))}
+                  </div>
+                ) : (
                   <NavLink
-                    key={child.to}
-                    to={child.to}
-                    className={({ isActive }) => `navbar-mobile-link ${isActive ? 'active' : ''}`}
+                    key={link.to}
+                    to={link.to}
+                    end={link.to === '/'}
+                    className={({ isActive }) => cn(
+                      'px-3 py-3 rounded-lg text-sm font-medium transition-all duration-150',
+                      isActive
+                        ? 'text-cyan-400 bg-cyan-400/10'
+                        : 'text-[#8A8AA0] hover:text-white hover:bg-white/5'
+                    )}
                   >
-                    {child.label}
+                    {link.label}
                   </NavLink>
-                ))}
+                )
+              )}
+              <div className="pt-2 pb-1 flex flex-col gap-2">
+                <Link
+                  to="/payment"
+                  className="flex items-center justify-center gap-2 px-4 py-3 rounded-xl border border-white/[0.08] text-sm font-medium text-[#8A8AA0] hover:text-white hover:bg-white/5 transition-all"
+                >
+                  💳 Pay Now
+                </Link>
+                <Link
+                  to="/contact"
+                  className="flex items-center justify-center gap-2 px-4 py-3 rounded-xl text-sm font-semibold bg-gradient-to-r from-cyan-400 to-purple-500 text-white"
+                >
+                  Get Started →
+                </Link>
               </div>
-            ) : (
-              <NavLink
-                key={link.to}
-                to={link.to}
-                className={({ isActive }) => `navbar-mobile-link ${isActive ? 'active' : ''}`}
-                end={link.to === '/'}
-              >
-                {link.label}
-              </NavLink>
-            )
-          )}
-          <Link to="/payment" className="btn btn-outline" style={{ marginTop: 8, justifyContent: 'center' }}>
-            💳 Pay Now
-          </Link>
-          <Link to="/contact" className="btn btn-primary" style={{ marginTop: 8, justifyContent: 'center' }}>
-            Get Started →
-          </Link>
-        </nav>
-      </div>
+            </nav>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </header>
   );
 }

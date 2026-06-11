@@ -1,29 +1,42 @@
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, lazy, Suspense } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import Lenis from 'lenis';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import FloatingSocial from './components/FloatingSocial';
+import CursorGlow from './components/CursorGlow';
 import { useScrollProgress, useScrollToTop, usePublicData } from './hooks/usePublicData';
-
-// Pages
-import Home from './pages/Home';
-import About from './pages/About';
-import Services from './pages/Services';
-import Products from './pages/Products';
-import Projects from './pages/Projects';
-import Demos from './pages/Demos';
-import DemoVideos from './pages/DemoVideos';
-import Testimonials from './pages/Testimonials';
-import Blog from './pages/Blog';
-import BlogPost from './pages/BlogPost';
-import Contact from './pages/Contact';
-import PrivacyPolicy from './pages/PrivacyPolicy';
-import TermsConditions from './pages/TermsConditions';
-import RefundPolicy from './pages/RefundPolicy';
-import Payment from './pages/Payment';
-
 import { ArrowUp } from 'lucide-react';
-import './App.css';
+
+// Pages — lazy loaded for performance
+const Home        = lazy(() => import('./pages/Home'));
+const About       = lazy(() => import('./pages/About'));
+const Services    = lazy(() => import('./pages/Services'));
+const Products    = lazy(() => import('./pages/Products'));
+const Projects    = lazy(() => import('./pages/Projects'));
+const Demos       = lazy(() => import('./pages/Demos'));
+const DemoVideos  = lazy(() => import('./pages/DemoVideos'));
+const Testimonials = lazy(() => import('./pages/Testimonials'));
+const Blog        = lazy(() => import('./pages/Blog'));
+const BlogPost    = lazy(() => import('./pages/BlogPost'));
+const Contact     = lazy(() => import('./pages/Contact'));
+const PrivacyPolicy = lazy(() => import('./pages/PrivacyPolicy'));
+const TermsConditions = lazy(() => import('./pages/TermsConditions'));
+const RefundPolicy = lazy(() => import('./pages/RefundPolicy'));
+const Payment     = lazy(() => import('./pages/Payment'));
+
+// Page fallback
+function PageSkeleton() {
+  return (
+    <div className="min-h-screen flex items-center justify-center" style={{ background: 'var(--color-bg)' }}>
+      <div className="flex flex-col items-center gap-4">
+        <div className="w-10 h-10 rounded-full border-2 border-cyan-400/30 border-t-cyan-400 animate-spin" />
+        <p className="text-[#8A8AA0] text-sm">Loading...</p>
+      </div>
+    </div>
+  );
+}
 
 function ScrollRestoration() {
   const { pathname } = useLocation();
@@ -31,70 +44,151 @@ function ScrollRestoration() {
   return null;
 }
 
+// Premium loading screen
+function LoadingScreen() {
+  return (
+    <motion.div
+      className="loading-screen"
+      exit={{ opacity: 0, scale: 1.05 }}
+      transition={{ duration: 0.5, ease: [0.25, 0.1, 0.25, 1] }}
+    >
+      {/* Glow orbs */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 rounded-full bg-cyan-400/10 blur-[80px]" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-48 rounded-full bg-purple-500/10 blur-[60px]" />
+
+      <div className="relative z-10 flex flex-col items-center gap-6">
+        {/* Logo */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="flex items-center gap-3"
+        >
+          <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-cyan-400 to-purple-500 flex items-center justify-center shadow-glow-cyan">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+            </svg>
+          </div>
+          <span className="font-heading font-bold text-3xl text-white tracking-tight">
+            Genz<span className="text-gradient">Teck</span>
+          </span>
+        </motion.div>
+
+        {/* Loading bar */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.3 }}
+          className="w-48 h-[2px] rounded-full overflow-hidden bg-white/5"
+        >
+          <div className="loading-bar-fill h-full rounded-full" />
+        </motion.div>
+
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.5 }}
+          className="text-[#8A8AA0] text-xs tracking-widest uppercase"
+        >
+          Initializing experience...
+        </motion.p>
+      </div>
+    </motion.div>
+  );
+}
+
 function AppContent() {
   const { data, loading } = usePublicData();
   const scrollProgress = useScrollProgress();
   const { visible, scrollToTop } = useScrollToTop();
   const [showLoader, setShowLoader] = useState(true);
+  const location = useLocation();
 
+  // Lenis smooth scroll
   useEffect(() => {
-    const timer = setTimeout(() => setShowLoader(false), 1500);
-    return () => clearTimeout(timer);
+    const lenis = new Lenis({
+      duration: 1.2,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      direction: 'vertical',
+      gestureDirection: 'vertical',
+      smooth: true,
+      smoothTouch: false,
+      touchMultiplier: 2,
+    });
+
+    function raf(time) {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    }
+    requestAnimationFrame(raf);
+
+    return () => lenis.destroy();
   }, []);
 
-  if (showLoader) {
-    return (
-      <div className="loading-screen">
-        <div className="loading-logo">GenzTeck</div>
-        <div className="loading-bar">
-          <div className="loading-bar-fill" />
-        </div>
-      </div>
-    );
-  }
+  useEffect(() => {
+    const timer = setTimeout(() => setShowLoader(false), 1800);
+    return () => clearTimeout(timer);
+  }, []);
 
   return (
     <>
       {/* Scroll Progress */}
       <div className="scroll-progress" style={{ width: `${scrollProgress}%` }} />
 
+      {/* Loading Screen */}
+      <AnimatePresence>
+        {showLoader && <LoadingScreen key="loader" />}
+      </AnimatePresence>
+
+      {/* Cursor Glow */}
+      <CursorGlow />
+
       <ScrollRestoration />
       <Navbar settings={data.settings} />
 
       <main>
-        <Routes>
-          <Route path="/" element={<Home data={data} />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/services" element={<Services services={data.services} />} />
-          <Route path="/products" element={<Products products={data.products} />} />
-          <Route path="/projects" element={<Projects projects={data.projects} />} />
-          <Route path="/demos" element={<Demos demos={data.demos} />} />
-          <Route path="/demo-videos" element={<DemoVideos videos={data.demoVideos} />} />
-          <Route path="/testimonials" element={<Testimonials testimonials={data.testimonials} />} />
-          <Route path="/blog" element={<Blog blogs={data.blogs} />} />
-          <Route path="/blog/:slug" element={<BlogPost />} />
-          <Route path="/contact" element={<Contact settings={data.settings} />} />
-          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-          <Route path="/terms-conditions" element={<TermsConditions />} />
-          <Route path="/refund-policy" element={<RefundPolicy />} />
-          <Route path="/payment" element={<Payment />} />
-        </Routes>
+        <Suspense fallback={<PageSkeleton />}>
+          <AnimatePresence mode="wait">
+            <Routes location={location} key={location.pathname}>
+              <Route path="/"               element={<Home data={data} />} />
+              <Route path="/about"          element={<About />} />
+              <Route path="/services"       element={<Services services={data.services} />} />
+              <Route path="/products"       element={<Products products={data.products} />} />
+              <Route path="/projects"       element={<Projects projects={data.projects} />} />
+              <Route path="/demos"          element={<Demos demos={data.demos} />} />
+              <Route path="/demo-videos"    element={<DemoVideos videos={data.demoVideos} />} />
+              <Route path="/testimonials"   element={<Testimonials testimonials={data.testimonials} />} />
+              <Route path="/blog"           element={<Blog blogs={data.blogs} />} />
+              <Route path="/blog/:slug"     element={<BlogPost />} />
+              <Route path="/contact"        element={<Contact settings={data.settings} />} />
+              <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+              <Route path="/terms-conditions" element={<TermsConditions />} />
+              <Route path="/refund-policy"  element={<RefundPolicy />} />
+              <Route path="/payment"        element={<Payment />} />
+            </Routes>
+          </AnimatePresence>
+        </Suspense>
       </main>
 
       <Footer settings={data.settings} />
       <FloatingSocial settings={data.settings} />
 
       {/* Back to Top */}
-      {visible && (
-        <button
-          className="back-to-top"
-          onClick={scrollToTop}
-          aria-label="Back to top"
-          id="back-to-top-btn"
-        >
-          <ArrowUp size={18} />
-        </button>
-      )}
+      <AnimatePresence>
+        {visible && (
+          <motion.button
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.8 }}
+            className="back-to-top"
+            onClick={scrollToTop}
+            aria-label="Back to top"
+            id="back-to-top-btn"
+          >
+            <ArrowUp size={18} />
+          </motion.button>
+        )}
+      </AnimatePresence>
     </>
   );
 }

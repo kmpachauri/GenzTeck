@@ -1,6 +1,10 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { publicAPI } from '../api';
+import { motion } from 'framer-motion';
+import { Clock, Calendar, ArrowLeft, User } from 'lucide-react';
+import { Badge } from '../components/ui/Motion';
+import { BlogBackground } from '../components/3d/PageBackgrounds';
 
 export default function BlogPost() {
   const { slug } = useParams();
@@ -33,95 +37,122 @@ export default function BlogPost() {
   return (
     <div style={{ background: 'var(--color-bg)', minHeight: '100vh' }}>
       {/* Back Nav */}
-      <div style={{ paddingTop: 100, paddingBottom: 20 }}>
-        <div className="container">
-          <Link to="/blog" style={{ color: 'var(--color-text-muted)', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: '0.9rem', transition: 'color 0.2s' }}
-            onMouseEnter={e => e.target.style.color = 'var(--color-primary)'}
-            onMouseLeave={e => e.target.style.color = 'var(--color-text-muted)'}>
-            ← Back to Blog
+      <div className="pt-24 pb-4 border-b border-white/[0.05]">
+        <div className="max-w-[860px] mx-auto px-6">
+          <Link to="/blog" className="inline-flex items-center gap-2 text-[#8A8AA0] hover:text-cyan-400 text-sm transition-colors duration-200">
+            <ArrowLeft size={16} /> Back to Blog
           </Link>
         </div>
       </div>
 
       {loading ? (
-        <div style={{ textAlign: 'center', padding: '80px 0' }}>
-          <div style={{ width: 40, height: 40, border: '3px solid rgba(0,212,255,0.2)', borderTop: '3px solid var(--color-primary)', borderRadius: '50%', animation: 'spin 1s linear infinite', margin: '0 auto 16px' }} />
-          <p style={{ color: 'var(--color-text-muted)' }}>Loading article...</p>
+        <div className="flex flex-col items-center justify-center py-32 gap-4">
+          <div className="w-10 h-10 rounded-full border-2 border-cyan-400/30 border-t-cyan-400 animate-spin" />
+          <p className="text-[#8A8AA0] text-sm">Loading article...</p>
         </div>
       ) : error ? (
-        <div style={{ textAlign: 'center', padding: '80px 0' }}>
-          <span style={{ fontSize: '4rem' }}>😕</span>
-          <h2 style={{ color: '#fff', fontFamily: 'var(--font-heading)', margin: '20px 0 12px' }}>Post Not Found</h2>
-          <p style={{ color: 'var(--color-text-muted)', marginBottom: 28 }}>{error}</p>
-          <Link to="/blog" className="btn btn-primary">Back to Blog</Link>
+        <div className="flex flex-col items-center justify-center py-32 gap-5 text-center px-6">
+          <span className="text-6xl">😕</span>
+          <h2 className="font-heading font-bold text-white text-2xl">Post Not Found</h2>
+          <p className="text-[#8A8AA0]">{error}</p>
+          <Link to="/blog" className="px-6 py-3 rounded-full bg-gradient-to-r from-cyan-400 to-purple-500 text-white font-semibold text-sm">
+            Back to Blog
+          </Link>
         </div>
       ) : post ? (
         <article>
           {/* Post Hero */}
-          <section style={{ paddingBottom: 60, paddingTop: 20 }}>
-            <div className="container" style={{ maxWidth: 840 }}>
-              {/* Meta */}
-              <div style={{ display: 'flex', alignItems: 'center', gap: 14, marginBottom: 24, flexWrap: 'wrap' }}>
-                {post.category && <span className="badge">{post.category}</span>}
-                {post.readTime && <span style={{ color: 'var(--color-text-muted)', fontSize: '0.85rem' }}>{post.readTime}</span>}
-                {post.date && <span style={{ color: 'var(--color-text-muted)', fontSize: '0.85rem' }}>{formatDate(post.date)}</span>}
-                {post.author && <span style={{ color: 'var(--color-text-muted)', fontSize: '0.85rem' }}>by {post.author}</span>}
-              </div>
+          <section className="relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #070711 0%, #0D0D1E 100%)' }}>
+            <BlogBackground />
+            <div className="max-w-[860px] mx-auto px-6 py-16 relative z-10">
+              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
+                <div className="flex items-center gap-3 flex-wrap mb-6">
+                  {post.category && <Badge variant="purple">{post.category}</Badge>}
+                  {post.readTime && (
+                    <span className="inline-flex items-center gap-1.5 text-xs text-[#8A8AA0]">
+                      <Clock size={12} /> {post.readTime}
+                    </span>
+                  )}
+                  {post.date && (
+                    <span className="inline-flex items-center gap-1.5 text-xs text-[#8A8AA0]">
+                      <Calendar size={12} /> {formatDate(post.date)}
+                    </span>
+                  )}
+                </div>
+                <h1 className="text-[clamp(1.8rem,4vw,3rem)] font-bold font-heading text-white leading-tight mb-6">
+                  {post.title}
+                </h1>
+                {post.excerpt && (
+                  <p className="text-[#c0c0d0] text-lg leading-relaxed border-l-2 border-cyan-400 pl-5">
+                    {post.excerpt}
+                  </p>
+                )}
+              </motion.div>
+            </div>
+          </section>
 
-              {/* Title */}
-              <h1 style={{ fontFamily: 'var(--font-heading)', color: '#fff', fontSize: 'clamp(1.8rem, 4vw, 2.8rem)', lineHeight: 1.25, marginBottom: 20 }}>
-                {post.title}
-              </h1>
-
-              {/* Excerpt */}
-              {post.excerpt && (
-                <p style={{ color: 'var(--color-text-muted)', fontSize: '1.15rem', lineHeight: 1.7, marginBottom: 40, borderLeft: '3px solid var(--color-primary)', paddingLeft: 20 }}>
-                  {post.excerpt}
-                </p>
-              )}
-
-              {/* Divider */}
-              <div style={{ height: 1, background: 'rgba(255,255,255,0.06)', marginBottom: 40 }} />
-
-              {/* Content */}
-              <div style={{ color: '#c8c8d8', lineHeight: 1.9, fontSize: '1.05rem' }}
+          {/* Post Content */}
+          <section className="py-16">
+            <div className="max-w-[860px] mx-auto px-6">
+              <div className="mb-12 h-px bg-white/[0.06]" />
+              <div
+                className="prose-content"
+                style={{ color: '#c0c0d0', lineHeight: 1.9, fontSize: '1.05rem' }}
                 dangerouslySetInnerHTML={{ __html: post.content || post.body || '<p>Content coming soon...</p>' }}
               />
+              <style>{`
+                .prose-content h2 { font-family: var(--font-heading); color: white; font-size: 1.5rem; font-weight: 700; margin: 2.5rem 0 1rem; }
+                .prose-content h3 { font-family: var(--font-heading); color: rgba(200,200,220,1); font-size: 1.2rem; font-weight: 600; margin: 2rem 0 0.75rem; }
+                .prose-content p { margin-bottom: 1.25rem; }
+                .prose-content ul, .prose-content ol { padding-left: 1.5rem; margin-bottom: 1.25rem; }
+                .prose-content li { margin-bottom: 0.5rem; }
+                .prose-content strong { color: white; font-weight: 600; }
+                .prose-content a { color: #00D4FF; text-decoration: none; }
+                .prose-content a:hover { text-decoration: underline; }
+                .prose-content code { background: rgba(0,212,255,0.1); padding: 2px 6px; border-radius: 4px; font-size: 0.9em; color: #00D4FF; font-family: monospace; }
+                .prose-content blockquote { border-left: 3px solid #00D4FF; padding-left: 1rem; margin: 1.5rem 0; color: #8A8AA0; font-style: italic; }
+              `}</style>
             </div>
           </section>
 
           {/* Author Card */}
-          <section style={{ padding: '40px 0', background: 'var(--color-surface)' }}>
-            <div className="container" style={{ maxWidth: 840 }}>
-              <div className="card" style={{ display: 'flex', gap: 20, alignItems: 'center' }}>
-                <div style={{ width: 60, height: 60, borderRadius: '50%', background: 'linear-gradient(135deg, var(--color-primary), var(--color-secondary))', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700, fontFamily: 'var(--font-heading)', color: '#fff', fontSize: '1.2rem', flexShrink: 0 }}>GT</div>
+          <section className="py-12" style={{ background: 'var(--color-surface)' }}>
+            <div className="max-w-[860px] mx-auto px-6">
+              <div className="glass rounded-2xl border border-white/[0.08] p-6 flex items-center gap-5">
+                <div className="w-14 h-14 rounded-full bg-gradient-to-br from-cyan-400 to-purple-500 flex items-center justify-center text-white font-bold text-xl font-heading flex-shrink-0">
+                  GT
+                </div>
                 <div>
-                  <p style={{ color: '#fff', fontWeight: 600, fontFamily: 'var(--font-heading)', margin: '0 0 4px' }}>{post.author || 'GenzTeck Team'}</p>
-                  <p style={{ color: 'var(--color-text-muted)', fontSize: '0.85rem', margin: 0 }}>Full-Stack Development & Business Automation Experts at GenzTeck</p>
+                  <p className="text-white font-semibold font-heading mb-1">{post.author || 'GenzTeck Team'}</p>
+                  <p className="text-[#8A8AA0] text-sm">Full-Stack Development & Business Automation Experts at GenzTeck</p>
                 </div>
               </div>
             </div>
           </section>
 
           {/* CTA */}
-          <section style={{ padding: '60px 0', textAlign: 'center' }}>
-            <div className="container">
-              <h2 style={{ fontFamily: 'var(--font-heading)', color: '#fff', fontSize: 'clamp(1.5rem, 2.5vw, 2rem)', marginBottom: 16 }}>
+          <section className="py-20 text-center">
+            <div className="max-w-[860px] mx-auto px-6">
+              <h2 className="text-[clamp(1.5rem,2.5vw,2rem)] font-bold font-heading text-white mb-4">
                 Ready to Build Something <span className="text-gradient">Like This?</span>
               </h2>
-              <p style={{ color: 'var(--color-text-muted)', marginBottom: 28 }}>
+              <p className="text-[#8A8AA0] mb-10 text-lg">
                 Get a free consultation and project estimate from GenzTeck.
               </p>
-              <div style={{ display: 'flex', gap: 14, justifyContent: 'center', flexWrap: 'wrap' }}>
-                <Link to="/contact" className="btn btn-primary">Start a Project →</Link>
-                <Link to="/blog" className="btn btn-outline">Read More Articles</Link>
+              <div className="flex gap-4 justify-center flex-wrap">
+                <Link to="/contact"
+                  className="px-7 py-3.5 rounded-full font-semibold bg-gradient-to-r from-cyan-400 to-purple-500 text-white hover:-translate-y-0.5 transition-all shadow-btn-primary">
+                  Start a Project →
+                </Link>
+                <Link to="/blog"
+                  className="px-7 py-3.5 rounded-full font-semibold border border-cyan-400/30 text-cyan-400 hover:bg-cyan-400/10 hover:border-cyan-400 transition-all">
+                  Read More Articles
+                </Link>
               </div>
             </div>
           </section>
         </article>
       ) : null}
-
-      <style>{`@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }`}</style>
     </div>
   );
 }

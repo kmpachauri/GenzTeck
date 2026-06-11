@@ -1,144 +1,224 @@
 import { Link } from 'react-router-dom';
+import { ArrowRight, ExternalLink, CheckCircle, Monitor, Smartphone } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { Suspense, lazy } from 'react';
+import { ScrollReveal, StaggerReveal, StaggerItem, SectionHeader, Badge } from '../components/ui/Motion';
+import { GlassCard, TiltCard } from '../components/ui/Cards';
+
+const ProjectsBackground = lazy(() => import('../components/3d/PageBackgrounds').then(m => ({ default: m.ProjectsBackground })));
 
 const defaultProjects = [
   {
     _id: '1',
-    title: 'Zomato-Style Food Ordering Platform',
-    type: 'Web + Mobile App',
-    url: null,
-    problem: 'A restaurant chain with 8 locations had no centralized system — orders were taken on WhatsApp, receipts handwritten, and there was zero real-time visibility across branches.',
-    solution: 'Built a full-stack platform with a customer-facing ordering app, restaurant admin dashboard, kitchen display screens, and a centralized owner panel showing live sales across all branches.',
-    features: ['Multi-Branch Live Dashboard', 'Customer App with Real-Time Order Tracking', 'Kitchen Display System', 'GST-Compliant Billing', 'Online Payment (UPI + Card)', 'Loyalty Points System'],
-    techStack: ['React Native', 'Node.js', 'MongoDB', 'Socket.io', 'Razorpay', 'AWS'],
+    title: 'Prakrit Astro',
+    type: 'Astrology Platform',
+    url: 'https://prakritastro.com',
+    image: '/images/projects_mockup.png',
+    color: '#7B2FBE',
+    problem: 'Needed a premium digital presence for astrological consultations with online booking and payment.',
+    solution: 'Built a stunning astrology website with appointment booking, payment integration, and a content-rich blog.',
+    features: ['Appointment Booking System', 'Online Payment Integration', 'Astrology Blog', 'Services Showcase', 'Admin Dashboard'],
+    technologies: ['React.js', 'Node.js', 'MongoDB', 'Razorpay'],
+    result: '3x more consultation bookings within 60 days of launch.',
   },
   {
     _id: '2',
-    title: 'GeoTrace - Fleet Tracking Platform',
-    type: 'SaaS Platform',
-    url: null,
-    problem: 'A logistics company managing 50+ delivery drivers had no way to track real-time locations, verify attendance, or generate automated route reports — costing them time and money daily.',
-    solution: 'Developed GeoTrace, a real-time fleet tracking SaaS with a web dashboard for managers, driver mobile app, geofencing alerts, and automated daily distance and attendance reports.',
-    features: ['Real-Time GPS Tracking', 'Geofence Zone Alerts', 'Driver App (Android)', 'Automated Daily Reports', 'Route Replay History', 'WhatsApp Notifications'],
-    techStack: ['React.js', 'Node.js', 'MongoDB', 'Google Maps API', 'Firebase', 'Socket.io'],
+    title: 'Axora Homes',
+    type: 'Real Estate Website',
+    url: 'https://axora.homes',
+    image: null,
+    color: '#00D4FF',
+    problem: 'Required a high-converting real estate platform to showcase luxury properties to premium buyers.',
+    solution: 'Developed a visually stunning real estate website with property listings, virtual tours, and lead capture.',
+    features: ['Property Listings & Search', 'Lead Capture Forms', 'Virtual Tour Support', 'Agent Profiles', 'Admin CMS'],
+    technologies: ['React.js', 'Node.js', 'MongoDB', 'AWS'],
+    result: 'Qualified leads up 200% within the first month.',
   },
   {
     _id: '3',
-    title: 'Multi-Vendor Wholesale Marketplace',
-    type: 'E-Commerce Platform',
-    url: null,
-    problem: 'A wholesale market association wanted to take their 200+ vendors online but found existing platforms too expensive, too generic, and not suited for bulk ordering with custom pricing.',
-    solution: 'Built a custom multi-vendor marketplace with bulk order flows, vendor-specific pricing tiers, credit-based ordering, offline-to-online catalog migration, and a seller app.',
-    features: ['200+ Vendor Onboarding', 'Bulk Order Management', 'Tiered Pricing Engine', 'Credit & Payment Tracking', 'Seller Mobile App', 'Buyer Loyalty Program'],
-    techStack: ['Next.js', 'Node.js', 'PostgreSQL', 'Redis', 'Stripe', 'AWS S3'],
+    title: 'Zaira Restaurant',
+    type: 'Restaurant Website + Ordering',
+    url: 'https://zairarestaurant.com',
+    image: null,
+    color: '#FF6B6B',
+    problem: 'Wanted a premium digital presence with live online ordering and a QR-based table ordering system.',
+    solution: 'Built a full restaurant ecosystem — website, online ordering, QR menus, and kitchen display system.',
+    features: ['Restaurant Website', 'Online Ordering System', 'QR Table Menu', 'Kitchen Display System', 'Order Analytics'],
+    technologies: ['React.js', 'Node.js', 'MongoDB', 'Socket.io'],
+    result: 'Online ordering revenue increased 40% in the first quarter.',
   },
   {
     _id: '4',
-    title: 'Hospital Staff & Attendance System',
-    type: 'Internal Tool',
+    title: 'Zaira Online Ordering',
+    type: 'Online Food Ordering Platform',
     url: null,
-    problem: 'A 300-bed hospital was managing staff shifts, attendance, and payroll on Excel spreadsheets — leading to errors, disputes, and hours of manual reconciliation every month.',
-    solution: 'Developed a biometric-integrated staff management system with shift scheduling, real-time attendance tracking, leave management, automated payroll, and management reports.',
-    features: ['Biometric Integration', 'Smart Shift Scheduling', 'Leave & Holiday Management', 'Automated Payroll Calculation', 'Department-Wise Reports', 'Employee Self-Service Portal'],
-    techStack: ['React.js', 'Node.js', 'PostgreSQL', 'Redis', 'Docker', 'NGINX'],
+    image: null,
+    color: '#00FF88',
+    problem: 'Needed a standalone online ordering platform that customers could access directly via link or QR code.',
+    solution: 'Built a standalone ordering app with category filtering, cart, live order tracking, and payment.',
+    features: ['Category-Based Menu', 'Smart Cart System', 'Live Order Tracking', 'UPI/Card Payment', 'Order History'],
+    technologies: ['React.js', 'Node.js', 'Socket.io', 'Razorpay'],
+    result: 'Average order value increased 25% vs. phone orders.',
   },
 ];
 
 export default function Projects({ projects }) {
-  const data = projects && projects.length > 0 ? projects : defaultProjects;
+  const data = projects?.length > 0 ? projects : defaultProjects;
 
   return (
     <div style={{ background: 'var(--color-bg)', minHeight: '100vh' }}>
       {/* Hero */}
-      <section style={{ paddingTop: 120, paddingBottom: 80, background: 'linear-gradient(135deg, #070711 0%, #12121E 100%)', textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
-        <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse at 60% 0%, rgba(123,47,190,0.12) 0%, transparent 60%)', pointerEvents: 'none' }} />
-        <div className="container" style={{ position: 'relative' }}>
-          <span className="section-label">Portfolio</span>
-          <h1 className="section-title" style={{ fontSize: 'clamp(2.5rem, 5vw, 4rem)', marginTop: 12 }}>
-            Our <span className="text-gradient">Projects</span>
-          </h1>
-          <p style={{ color: 'var(--color-text-muted)', fontSize: '1.2rem', maxWidth: 580, margin: '20px auto 0' }}>
-            Real problems, real solutions. Explore the digital products we've built that are driving results.
-          </p>
-          <div style={{ display: 'flex', gap: 12, justifyContent: 'center', marginTop: 32, flexWrap: 'wrap' }}>
-            <span className="badge">{data.length} Projects</span>
-            <span className="badge">Production Grade</span>
-            <span className="badge">Indian Market</span>
-          </div>
+      <section className="relative pt-32 pb-24 text-center overflow-hidden"
+        style={{ background: 'linear-gradient(135deg, #070711 0%, #0D1A14 100%)' }}>
+        <Suspense fallback={null}>
+          <ProjectsBackground />
+        </Suspense>
+        <div className="max-w-[1200px] mx-auto px-6 relative z-10">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}
+            className="inline-flex items-center gap-2 text-cyan-400 text-xs font-semibold tracking-[3px] uppercase mb-5">
+            <span className="w-6 h-px bg-cyan-400" />Portfolio<span className="w-6 h-px bg-cyan-400" />
+          </motion.div>
+          <motion.h1 initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.1 }}
+            className="text-[clamp(2.8rem,5vw,4.5rem)] font-bold font-heading leading-[1.1] mb-6">
+            Real Projects, <span className="text-gradient">Real Results</span>
+          </motion.h1>
+          <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.2 }}
+            className="text-[#8A8AA0] text-xl max-w-2xl mx-auto leading-relaxed">
+            From astrology platforms to restaurant systems — see what we've built for businesses like yours.
+          </motion.p>
         </div>
       </section>
 
-      {/* Projects */}
-      <section className="section">
-        <div className="container" style={{ display: 'flex', flexDirection: 'column', gap: 48 }}>
-          {data.map((project, i) => (
-            <div key={project._id || i} className="card" style={{ padding: '36px 40px' }}>
-              {/* Header */}
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 28, flexWrap: 'wrap', gap: 16 }}>
-                <div>
-                  <span className="section-label" style={{ marginBottom: 8, display: 'block', textAlign: 'left' }}>{project.type}</span>
-                  <h2 style={{ fontFamily: 'var(--font-heading)', color: '#fff', fontSize: 'clamp(1.4rem, 2.5vw, 1.8rem)', margin: 0 }}>{project.title}</h2>
-                </div>
-                <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', alignItems: 'center' }}>
-                  {project.url ? (
-                    <a href={project.url} target="_blank" rel="noopener noreferrer" className="btn btn-primary" style={{ fontSize: '0.9rem', padding: '8px 20px' }}>
-                      View Live →
-                    </a>
-                  ) : (
-                    <span className="badge-coming-soon">Case Study Coming Soon</span>
-                  )}
-                </div>
-              </div>
+      {/* Case Studies */}
+      <div className="max-w-[1200px] mx-auto px-6 py-16">
+        <div className="flex flex-col gap-16">
+          {data.map((project, i) => {
+            const isEven = i % 2 === 0;
+            return (
+              <ScrollReveal key={project._id || i} delay={0.05 * i}>
+                <div className="glass rounded-3xl border border-white/[0.08] overflow-hidden hover:border-cyan-400/20 transition-all duration-300 group">
+                  <div className={`flex flex-col lg:flex-row ${isEven ? '' : 'lg:flex-row-reverse'}`}>
+                    {/* Mockup Visual */}
+                    <div className="lg:w-2/5 relative overflow-hidden"
+                      style={{ minHeight: 280, background: `linear-gradient(135deg, ${project.color}10, rgba(0,0,0,0.3))` }}>
+                      {project.image ? (
+                        <img src={project.image} alt={project.title}
+                          className="w-full h-full object-cover opacity-80 group-hover:scale-105 transition-transform duration-700" loading="lazy" />
+                      ) : (
+                        <div className="absolute inset-0 flex flex-col items-center justify-center p-8">
+                          {/* Premium placeholder with browser frame */}
+                          <div className="w-full max-w-xs">
+                            <div className="bg-[#1A1A2E] rounded-xl border border-white/10 overflow-hidden shadow-2xl">
+                              {/* Browser bar */}
+                              <div className="flex items-center gap-2 px-4 py-2.5 bg-[#12121E] border-b border-white/5">
+                                <div className="flex gap-1.5">
+                                  <div className="w-2.5 h-2.5 rounded-full bg-red-500/60" />
+                                  <div className="w-2.5 h-2.5 rounded-full bg-amber-500/60" />
+                                  <div className="w-2.5 h-2.5 rounded-full bg-emerald-500/60" />
+                                </div>
+                                <div className="flex-1 mx-3 bg-[#070711] rounded text-xs text-[#5A5A7A] px-2 py-1 truncate">
+                                  {project.url || 'genzteck.com/project'}
+                                </div>
+                              </div>
+                              {/* Fake content */}
+                              <div className="p-4 space-y-3">
+                                <div className="h-24 rounded-lg" style={{ background: `${project.color}15` }} />
+                                <div className="flex gap-2">
+                                  <div className="h-3 flex-1 rounded bg-white/5" />
+                                  <div className="h-3 w-16 rounded bg-white/5" />
+                                </div>
+                                <div className="h-3 w-3/4 rounded bg-white/5" />
+                                <div className="h-3 w-1/2 rounded bg-white/5" />
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                      <Badge variant="purple" className="absolute top-4 left-4">{project.type}</Badge>
+                    </div>
 
-              {/* Problem & Solution */}
-              <div className="grid-2" style={{ gap: 28, marginBottom: 28 }}>
-                <div style={{ background: 'rgba(255,50,50,0.05)', border: '1px solid rgba(255,50,50,0.15)', borderRadius: 12, padding: 20 }}>
-                  <p style={{ color: '#ff7777', fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: 1, fontWeight: 700, marginBottom: 10 }}>🔴 The Problem</p>
-                  <p style={{ color: 'var(--color-text-muted)', lineHeight: 1.7, margin: 0, fontSize: '0.95rem' }}>{project.problem}</p>
-                </div>
-                <div style={{ background: 'rgba(0,212,255,0.05)', border: '1px solid rgba(0,212,255,0.15)', borderRadius: 12, padding: 20 }}>
-                  <p style={{ color: 'var(--color-primary)', fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: 1, fontWeight: 700, marginBottom: 10 }}>🟢 Our Solution</p>
-                  <p style={{ color: 'var(--color-text-muted)', lineHeight: 1.7, margin: 0, fontSize: '0.95rem' }}>{project.solution}</p>
-                </div>
-              </div>
+                    {/* Content */}
+                    <div className="lg:w-3/5 p-8 lg:p-10 flex flex-col justify-between">
+                      <div>
+                        <h2 className="font-heading font-bold text-white text-2xl md:text-3xl mb-2">{project.title}</h2>
 
-              {/* Features & Tech Stack */}
-              <div className="grid-2" style={{ gap: 28 }}>
-                {project.features && project.features.length > 0 && (
-                  <div>
-                    <p style={{ color: '#8A8AA0', fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: 1, marginBottom: 12, fontWeight: 600 }}>Features Delivered</p>
-                    <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: 8 }}>
-                      {project.features.map((f, j) => (
-                        <li key={j} style={{ display: 'flex', alignItems: 'center', gap: 8, color: '#c0c0d0', fontSize: '0.9rem' }}>
-                          <span style={{ color: 'var(--color-primary)', fontWeight: 700 }}>✓</span> {f}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
-                {project.techStack && project.techStack.length > 0 && (
-                  <div>
-                    <p style={{ color: '#8A8AA0', fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: 1, marginBottom: 12, fontWeight: 600 }}>Tech Stack</p>
-                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
-                      {project.techStack.map((tech, j) => (
-                        <span key={j} className="badge" style={{ fontSize: '0.85rem' }}>{tech}</span>
-                      ))}
+                        <div className="flex flex-col gap-6 mt-6">
+                          {/* Problem */}
+                          <div>
+                            <p className="text-xs font-bold uppercase tracking-wider text-[#5A5A7A] mb-2">The Challenge</p>
+                            <p className="text-[#c0c0d0] text-sm leading-relaxed">{project.problem || 'Building a premium digital presence for a growing business.'}</p>
+                          </div>
+                          {/* Solution */}
+                          <div>
+                            <p className="text-xs font-bold uppercase tracking-wider text-[#5A5A7A] mb-2">Our Solution</p>
+                            <p className="text-[#c0c0d0] text-sm leading-relaxed">{project.solution || 'A complete digital solution with modern design and powerful features.'}</p>
+                          </div>
+                          {/* Features */}
+                          {project.features?.length > 0 && (
+                            <div>
+                              <p className="text-xs font-bold uppercase tracking-wider text-[#5A5A7A] mb-2">Key Features Built</p>
+                              <div className="grid grid-cols-2 gap-1.5">
+                                {project.features.map((f, j) => (
+                                  <div key={j} className="flex items-center gap-2 text-xs text-[#8A8AA0]">
+                                    <CheckCircle size={12} className="text-emerald-400 flex-shrink-0" />
+                                    {f}
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+                          )}
+                          {/* Tech */}
+                          {project.technologies?.length > 0 && (
+                            <div className="flex gap-2 flex-wrap">
+                              {project.technologies.map((t, j) => (
+                                <Badge key={j} variant="default">{t}</Badge>
+                              ))}
+                            </div>
+                          )}
+                          {/* Result */}
+                          {project.result && (
+                            <div className="p-4 rounded-xl" style={{ background: `${project.color}10`, borderLeft: `3px solid ${project.color}` }}>
+                              <p className="text-xs font-bold uppercase tracking-wider mb-1" style={{ color: project.color }}>Result</p>
+                              <p className="text-white text-sm font-medium">{project.result}</p>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+
+                      <div className="flex gap-3 mt-8 flex-wrap">
+                        {project.url ? (
+                          <a href={project.url} target="_blank" rel="noopener noreferrer"
+                            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold text-white hover:-translate-y-0.5 transition-all"
+                            style={{ background: `linear-gradient(135deg, ${project.color}, #7B2FBE)` }}>
+                            View Live <ExternalLink size={13} />
+                          </a>
+                        ) : null}
+                        <Badge variant="amber">📄 Case Study Coming Soon</Badge>
+                      </div>
                     </div>
                   </div>
-                )}
-              </div>
-            </div>
-          ))}
+                </div>
+              </ScrollReveal>
+            );
+          })}
         </div>
-      </section>
+      </div>
 
       {/* CTA */}
-      <section className="section" style={{ background: 'var(--color-surface)', textAlign: 'center' }}>
-        <div className="container">
-          <h2 style={{ fontSize: 'clamp(1.8rem, 3vw, 2.2rem)', fontFamily: 'var(--font-heading)', color: '#fff', marginBottom: 16 }}>
-            Want Us to Build <span className="text-gradient">Your Project?</span>
-          </h2>
-          <p style={{ color: 'var(--color-text-muted)', marginBottom: 32 }}>Get a free consultation and project estimate.</p>
-          <Link to="/contact" className="btn btn-primary">Start Your Project →</Link>
+      <section className="py-24 text-center" style={{ background: 'var(--color-surface)' }}>
+        <div className="max-w-[1200px] mx-auto px-6">
+          <ScrollReveal>
+            <h2 className="text-[clamp(1.8rem,3vw,2.5rem)] font-bold font-heading mb-4">
+              Want Your Project to Be <span className="text-gradient">Next?</span>
+            </h2>
+            <p className="text-[#8A8AA0] mb-10 text-lg max-w-xl mx-auto">
+              Let's build something that makes an impact for your business and your customers.
+            </p>
+            <Link to="/contact"
+              className="inline-flex items-center gap-2 px-8 py-4 rounded-full font-semibold bg-gradient-to-r from-cyan-400 to-purple-500 text-white shadow-btn-primary hover:shadow-btn-primary-hover hover:-translate-y-0.5 transition-all text-base">
+              Start a Project <ArrowRight size={18} />
+            </Link>
+          </ScrollReveal>
         </div>
       </section>
     </div>
