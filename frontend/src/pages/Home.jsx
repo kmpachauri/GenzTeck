@@ -28,14 +28,14 @@ const defaultProducts = [
 
 const defaultProjects = [
   { _id: '1', title: 'Prakrit Astro', type: 'Astrology Platform', url: 'https://prakritastro.com', problem: 'Needed a premium digital presence for astrological consultations and services.' },
-  { _id: '2', title: 'Axora Homes', type: 'Real Estate Website', url: 'https://axora.homes', problem: 'Required a high-converting real estate platform to showcase premium properties.' },
-  { _id: '3', title: 'Zaira Restaurant', type: 'Restaurant Website', url: 'https://zairarestaurant.com', problem: 'Wanted a stunning digital presence with online ordering and QR menu system.' },
+  { _id: '2', title: 'Nidhi Decor', type: 'Interior & E-Commerce', url: 'https://axora.homes', problem: 'Needed an elegant e-commerce layout for decoration and interior design products to showcase options and capture buyer inquiries.' },
+  { _id: '3', title: 'RLP Digital Mobile App', type: 'Mobile App', url: null, problem: 'Local political party needed a secure mobile app hub to train members, share updates, and generate customized campaign posters.' },
 ];
 
 const defaultTestimonials = [
   { _id: '1', name: 'Rahul Sharma', businessName: 'Prakrit Astro', rating: 5, reviewText: 'GenzTeck built our website in just 2 weeks. Our online inquiries have tripled since launch! The design quality is exceptional.' },
-  { _id: '2', name: 'Priya Patel', businessName: 'Axora Homes', rating: 5, reviewText: 'The real estate website they built is exactly what we envisioned. Clean, professional, and it converts. Best investment we made.' },
-  { _id: '3', name: 'Chef Meera', businessName: 'Zaira Restaurant', rating: 5, reviewText: 'Our online ordering system has been a game changer. Customers love the QR menu! Revenue up 40% since launch.' },
+  { _id: '2', name: 'Priya Patel', businessName: 'Nidhi Decor', rating: 5, reviewText: 'The product showcase site they built is exactly what we envisioned. Clean, modern, and it converts. Highly recommended!' },
+  { _id: '3', name: 'Amit Rao', businessName: 'RLP Digital', rating: 5, reviewText: 'The mobile app developed for our members has streamlined volunteer training and campaign updates. Exceptional development work.' },
 ];
 
 const techStack = [
@@ -335,28 +335,33 @@ export default function Home({ data }) {
       <section className="py-28 relative" id="projects-preview">
         <div className="max-w-[1200px] mx-auto px-6">
           <SectionHeader
-            label="Portfolio"
-            title={<>Recent <span className="text-gradient">Projects</span></>}
+            label="Our Work"
+            title={<>Our Recent <span className="text-gradient">Work</span></>}
             subtitle="Real projects, real results. See what we've built for businesses like yours."
           />
           <StaggerReveal className="grid grid-cols-1 md:grid-cols-3 gap-6" staggerDelay={0.1}>
             {projects.map((project) => (
               <StaggerItem key={project._id}>
                 <TiltCard className="h-full group">
-                  <GlassCard className="h-full p-8" glowColor="purple">
-                    <Badge variant="purple" className="mb-4">{project.type}</Badge>
-                    <h3 className="font-heading font-bold text-white text-xl mb-3">{project.title}</h3>
-                    <p className="text-[#8A8AA0] text-sm leading-relaxed mb-6">
-                      {project.problem || `A premium ${project.type?.toLowerCase()} built with modern technology.`}
-                    </p>
+                  <GlassCard className="h-full p-8 flex flex-col justify-between" glowColor="purple">
+                    <div>
+                      <Badge variant="purple" className="mb-4">{project.type}</Badge>
+                      <h3 className="font-heading font-bold text-white text-xl mb-3">{project.title}</h3>
+                      <p className="text-[#8A8AA0] text-sm leading-relaxed mb-6 font-light">
+                        {project.problem || `A premium ${project.type?.toLowerCase()} built with modern technology.`}
+                      </p>
+                    </div>
                     <div className="flex items-center gap-3 flex-wrap mt-auto">
-                      {project.url && (
+                      {project.url ? (
                         <a href={project.url} target="_blank" rel="noopener noreferrer"
                           className="inline-flex items-center gap-1.5 text-sm text-cyan-400 hover:text-cyan-300 font-medium transition-colors">
-                          View Live <ArrowRight size={14} />
+                          View Project <ArrowRight size={14} />
                         </a>
+                      ) : (
+                        <span className="inline-flex items-center gap-1 text-xs font-semibold bg-cyan-500/10 text-cyan-400 border border-cyan-400/20 px-3 py-1 rounded-full">
+                          📱 Mobile App Project
+                        </span>
                       )}
-                      <Badge variant="amber">Case Study Soon</Badge>
                     </div>
                   </GlassCard>
                 </TiltCard>
@@ -365,7 +370,7 @@ export default function Home({ data }) {
           </StaggerReveal>
           <ScrollReveal className="mt-14 flex justify-center">
             <Link to="/projects" className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full font-semibold border border-cyan-400/30 text-cyan-400 hover:bg-cyan-400/10 hover:border-cyan-400 transition-all duration-200" id="view-all-projects-btn">
-              View All Projects <ArrowRight size={16} />
+              View Our Work <ArrowRight size={16} />
             </Link>
           </ScrollReveal>
         </div>

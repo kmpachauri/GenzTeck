@@ -117,17 +117,17 @@ export default function Settings() {
         <div className="form-row">
           <div className="form-group">
             <label className="form-label">WhatsApp Number</label>
-            <input className="form-input" value={settings.whatsapp} onChange={e => set('whatsapp', e.target.value)} placeholder="+91 99999 99999" />
+            <input className="form-input" value={settings.whatsapp} onChange={e => set('whatsapp', e.target.value)} placeholder="+91 87695 92668" />
           </div>
           <div className="form-group">
             <label className="form-label">Instagram URL</label>
-            <input className="form-input" type="url" value={settings.instagram} onChange={e => set('instagram', e.target.value)} placeholder="https://instagram.com/..." />
+            <input className="form-input" type="url" value={settings.instagram} onChange={e => set('instagram', e.target.value)} placeholder="https://www.instagram.com/genzteck_com" />
           </div>
         </div>
         <div className="form-row">
           <div className="form-group">
             <label className="form-label">Facebook URL</label>
-            <input className="form-input" type="url" value={settings.facebook} onChange={e => set('facebook', e.target.value)} placeholder="https://facebook.com/..." />
+            <input className="form-input" type="url" value={settings.facebook} onChange={e => set('facebook', e.target.value)} placeholder="https://www.facebook.com/share/1LpRPBaGaP/" />
           </div>
           <div className="form-group">
             <label className="form-label">YouTube URL</label>
@@ -136,7 +136,7 @@ export default function Settings() {
         </div>
         <div className="form-group">
           <label className="form-label">LinkedIn URL</label>
-          <input className="form-input" type="url" value={settings.linkedin} onChange={e => set('linkedin', e.target.value)} placeholder="https://linkedin.com/company/..." />
+          <input className="form-input" type="url" value={settings.linkedin} onChange={e => set('linkedin', e.target.value)} placeholder="https://www.linkedin.com/company/genztecknology/" />
         </div>
       </Section>
 
@@ -145,16 +145,16 @@ export default function Settings() {
         <div className="form-row">
           <div className="form-group">
             <label className="form-label">Phone</label>
-            <input className="form-input" value={settings.phone} onChange={e => set('phone', e.target.value)} placeholder="+91 99999 99999" />
+            <input className="form-input" value={settings.phone} onChange={e => set('phone', e.target.value)} placeholder="+91 87695 92668" />
           </div>
           <div className="form-group">
             <label className="form-label">Email</label>
-            <input className="form-input" type="email" value={settings.email} onChange={e => set('email', e.target.value)} placeholder="hello@genzteck.com" />
+            <input className="form-input" type="email" value={settings.email} onChange={e => set('email', e.target.value)} placeholder="info.genzteck@gmail.com" />
           </div>
         </div>
         <div className="form-group">
           <label className="form-label">Address</label>
-          <textarea className="form-textarea" value={settings.address} onChange={e => set('address', e.target.value)} rows={2} placeholder="123 Street, City, State, PIN" />
+          <textarea className="form-textarea" value={settings.address} onChange={e => set('address', e.target.value)} rows={2} placeholder="B-54, Shri Shyam Residency, Dadudayal Nagar, Mansarovar, Jaipur (Rajasthan) - 302020" />
         </div>
       </Section>
 

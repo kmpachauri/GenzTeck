@@ -18,7 +18,8 @@ import {
   HelpCircle,
   Calendar,
   Menu as MenuIcon, 
-  X 
+  X,
+  Check
 } from 'lucide-react';
 
 function HotelNavbar({ isMobileOpen, setIsMobileOpen }) {

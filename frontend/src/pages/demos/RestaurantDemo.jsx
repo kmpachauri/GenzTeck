@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import DemoLayout, { useDemo, DemoLink } from '../../components/DemoLayout';
 import { motion } from 'framer-motion';
-import { Calendar, Clock, Users, ArrowRight, MessageSquare, Star, MapPin, Phone, Coffee, UtensilsCrossed, ShieldCheck, Heart, Sparkles, Award, Menu as MenuIcon, X } from 'lucide-react';
+import { Calendar, Clock, Users, ArrowRight, MessageSquare, Star, MapPin, Phone, Coffee, UtensilsCrossed, ShieldCheck, Heart, Sparkles, Award, Menu as MenuIcon, X, Check } from 'lucide-react';
 
 function RestaurantNavbar({ isMobileOpen, setIsMobileOpen }) {
   const { brandName } = useDemo();

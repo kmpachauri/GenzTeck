@@ -18,13 +18,15 @@ const Projects    = lazy(() => import('./pages/Projects'));
 const Demos       = lazy(() => import('./pages/Demos'));
 const DemoVideos  = lazy(() => import('./pages/DemoVideos'));
 const Testimonials = lazy(() => import('./pages/Testimonials'));
-const Blog        = lazy(() => import('./pages/Blog'));
-const BlogPost    = lazy(() => import('./pages/BlogPost'));
+// Blog is temporarily hidden from the public site.
+// const Blog        = lazy(() => import('./pages/Blog'));
+// const BlogPost    = lazy(() => import('./pages/BlogPost'));
 const Contact     = lazy(() => import('./pages/Contact'));
 const PrivacyPolicy = lazy(() => import('./pages/PrivacyPolicy'));
 const TermsConditions = lazy(() => import('./pages/TermsConditions'));
 const RefundPolicy = lazy(() => import('./pages/RefundPolicy'));
-const Payment     = lazy(() => import('./pages/Payment'));
+// Payment is temporarily hidden from the public site.
+// const Payment     = lazy(() => import('./pages/Payment'));
 
 // Dynamic Demo Preview Pages
 const RestaurantDemo      = lazy(() => import('./pages/demos/RestaurantDemo'));
@@ -207,13 +209,15 @@ function AppContent() {
 
               <Route path="/demo-videos"    element={<DemoVideos videos={data.demoVideos} />} />
               <Route path="/testimonials"   element={<Testimonials testimonials={data.testimonials} />} />
-              <Route path="/blog"           element={<Blog blogs={data.blogs} />} />
-              <Route path="/blog/:slug"     element={<BlogPost />} />
+              {/* Blog is temporarily hidden from the public site. */}
+              {/* <Route path="/blog"           element={<Blog blogs={data.blogs} />} /> */}
+              {/* <Route path="/blog/:slug"     element={<BlogPost />} /> */}
               <Route path="/contact"        element={<Contact settings={data.settings} />} />
               <Route path="/privacy-policy" element={<PrivacyPolicy />} />
               <Route path="/terms-conditions" element={<TermsConditions />} />
               <Route path="/refund-policy"  element={<RefundPolicy />} />
-              <Route path="/payment"        element={<Payment />} />
+              {/* Payment is temporarily hidden from the public site. */}
+              {/* <Route path="/payment"        element={<Payment />} /> */}
             </Routes>
           </AnimatePresence>
         </Suspense>

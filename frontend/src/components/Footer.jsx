@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Mail, Phone, MapPin, ExternalLink, Zap } from 'lucide-react';
+import { Clock, Mail, Phone, MapPin, ExternalLink, Zap } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 const InstagramIcon = () => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>;
@@ -25,35 +25,43 @@ const footerLinks = {
   ],
   company: [
     { to: '/about', label: 'About GenzTeck' },
-    { to: '/projects', label: 'Our Projects' },
+    { to: '/projects', label: 'Portfolio' },
     { to: '/demos', label: 'Request Demo' },
     { to: '/demo-videos', label: 'Demo Videos' },
     { to: '/testimonials', label: 'Testimonials' },
-    { to: '/blog', label: 'Blog' },
+    // { to: '/blog', label: 'Blog' },
     { to: '/contact', label: 'Contact Us' },
   ],
   legal: [
     { to: '/privacy-policy', label: 'Privacy Policy' },
     { to: '/terms-conditions', label: 'Terms & Conditions' },
     { to: '/refund-policy', label: 'Refund Policy' },
-    { to: '/payment', label: 'Make a Payment' },
+    // { to: '/payment', label: 'Make a Payment' },
   ],
 };
 
 const socialLinks = [
   { Icon: WhatsAppIcon, href: 'https://wa.me/918769592668', label: 'WhatsApp', color: '#25D366' },
-  { Icon: InstagramIcon, href: 'https://www.instagram.com/genz_teck', label: 'Instagram', color: '#E1306C' },
+  { Icon: InstagramIcon, href: 'https://www.instagram.com/genzteck_com', label: 'Instagram', color: '#E1306C' },
   { Icon: FacebookIcon, href: 'https://www.facebook.com/share/1LpRPBaGaP/', label: 'Facebook', color: '#1877F2' },
-  { Icon: YoutubeIcon, href: 'https://youtube.com/', label: 'YouTube', color: '#FF0000' },
+  { Icon: YoutubeIcon, href: 'https://youtube.com/@genzteck', label: 'YouTube', color: '#FF0000' },
   { Icon: LinkedinIcon, href: 'https://www.linkedin.com/company/genztecknology/', label: 'LinkedIn', color: '#0A66C2' },
   { Icon: GoogleIcon, href: 'https://g.page/r/CV6AhPIhEk6XEAI/review', label: 'Google', color: '#4285F4' },
 ];
 
+const contactInfo = {
+  email: 'info.genzteck@gmail.com',
+  phone: '+91 87695 92668',
+  address: 'Mansarovar, Jaipur',
+  officeHours: 'Mon - Sun, 9:00 AM - 7:00 PM IST',
+};
+
 export default function Footer({ settings }) {
   const currentYear = new Date().getFullYear();
-  const email = settings?.email || 'info.genzteck@gmail.com';
-  const phone = settings?.phone || '+91 87695 92668';
-  const address = settings?.address || 'B-54, Shri Shyam Residency, Dadudayal Nagar, Mansarovar, Jaipur (Raj.) - 302020';
+  const email = contactInfo.email;
+  const phone = contactInfo.phone;
+  const address = contactInfo.address;
+  const officeHours = contactInfo.officeHours;
 
   return (
     <footer className="relative bg-[#070711] border-t border-white/[0.06] overflow-hidden">
@@ -102,13 +110,17 @@ export default function Footer({ settings }) {
                 <Mail size={14} className="flex-shrink-0 group-hover:text-cyan-400" />
                 {email}
               </a>
-              <a href="tel:+918769592668" className="flex items-center gap-2.5 text-[#8A8AA0] hover:text-cyan-400 text-sm transition-colors duration-200 group">
+              <a href={`tel:${phone.replace(/\D/g, '')}`} className="flex items-center gap-2.5 text-[#8A8AA0] hover:text-cyan-400 text-sm transition-colors duration-200 group">
                 <Phone size={14} className="flex-shrink-0 group-hover:text-cyan-400" />
                 {phone}
               </a>
               <span className="flex items-start gap-2.5 text-[#8A8AA0] text-sm">
                 <MapPin size={14} className="flex-shrink-0 mt-0.5" />
                 {address}
+              </span>
+              <span className="flex items-start gap-2.5 text-[#8A8AA0] text-sm">
+                <Clock size={14} className="flex-shrink-0 mt-0.5" />
+                {officeHours}
               </span>
             </div>
           </div>

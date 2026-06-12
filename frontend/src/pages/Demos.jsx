@@ -57,11 +57,37 @@ export default function Demos() {
         <div className="max-w-[1200px] mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
           <SectionHeader
             label="Live Demonstrations"
-            title={<>Select an <span className="text-gradient">Industry Template</span></>}
+            title={<>Website <span className="text-gradient">Demo Gallery</span></>}
             subtitle="Each template features responsive, high-performance UI suitable for modern businesses."
           />
 
-          <StaggerReveal className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8" staggerDelay={0.05}>
+          {/* Premium glassmorphism info note card */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="mt-6 mb-12 max-w-3xl mx-auto glass p-6 rounded-2xl border border-white/[0.08] shadow-[0_12px_40px_-5px_rgba(0,0,0,0.4)] text-left relative overflow-hidden"
+          >
+            <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/5 to-purple-500/5 pointer-events-none" />
+            <div className="flex gap-4 items-start relative z-10">
+              <div className="w-10 h-10 rounded-xl bg-cyan-500/10 border border-cyan-400/20 flex items-center justify-center flex-shrink-0 shadow-[0_0_15px_rgba(6,182,212,0.15)]">
+                <Sparkles size={18} className="text-cyan-400" />
+              </div>
+              <div>
+                <h4 className="font-heading font-bold text-white text-base mb-1.5 flex items-center gap-2">
+                  Front-end preview only
+                  <span className="text-[10px] font-semibold bg-cyan-400/10 text-cyan-400 px-2.5 py-0.5 rounded border border-cyan-400/20 uppercase tracking-wider">
+                    Template Note
+                  </span>
+                </h4>
+                <p className="text-[#8A8AA0] text-xs sm:text-sm leading-relaxed font-light">
+                  These demos are front-end only: design, pages, and UI interactions in the browser. They do not include a real CMS, database, auth, or payment backend. The demo code is built as a rapid template — your paid GenzTeck website is finished, tested, and deployed for production with your real content and integrations.
+                </p>
+              </div>
+            </div>
+          </motion.div>
+
+          <StaggerReveal className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-10" staggerDelay={0.05}>
             {demoTemplates.map((template, idx) => (
               <StaggerItem key={template.slug} direction="up">
                 <DemoCard template={template} />

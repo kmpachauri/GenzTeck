@@ -48,7 +48,7 @@ async function seed() {
       heroTitle: 'We Build Software That Grows Your Business',
       heroSubtitle: 'Custom websites, mobile apps, automation systems & digital products for modern businesses.',
       whatsapp: '+918769592668',
-      instagram: 'https://www.instagram.com/genz_teck',
+      instagram: 'https://www.instagram.com/genzteck_com',
       facebook: 'https://www.facebook.com/share/1LpRPBaGaP/',
       youtube: 'https://youtube.com/@genzteck',
       linkedin: 'https://www.linkedin.com/company/genztecknology/',
