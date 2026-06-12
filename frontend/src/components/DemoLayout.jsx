@@ -1,13 +1,13 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 import { useSearchParams, useNavigate, Link } from 'react-router-dom';
-import { ArrowLeft, Sparkles, Send, ChevronUp, ChevronDown, Monitor, Smartphone } from 'lucide-react';
+import { ArrowLeft, Sparkles, Send, ChevronUp, ChevronDown, Menu, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-const DemoContext = createContext({ brandName: '', slug: '' });
+const DemoContext = createContext({ brandName: '', slug: '', currentSubpage: 'home' });
 
 export const useDemo = () => useContext(DemoContext);
 
-export default function DemoLayout({ children, defaultBrand = 'My Brand', slug = 'general' }) {
+export default function DemoLayout({ children, defaultBrand = 'My Brand', slug = 'general', currentSubpage = 'home' }) {
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
 
@@ -27,6 +27,7 @@ export default function DemoLayout({ children, defaultBrand = 'My Brand', slug =
 
   const handleBrandChange = (newVal) => {
     setBrandName(newVal);
+    // Keep search params in URL
     setSearchParams({ brand: newVal || defaultBrand }, { replace: true });
   };
 
@@ -35,8 +36,8 @@ export default function DemoLayout({ children, defaultBrand = 'My Brand', slug =
   };
 
   return (
-    <DemoContext.Provider value={{ brandName: brandName || defaultBrand, slug }}>
-      <div className="min-h-screen bg-slate-950 text-white font-body selection:bg-cyan-500 selection:text-black relative">
+    <DemoContext.Provider value={{ brandName: brandName || defaultBrand, slug, currentSubpage }}>
+      <div className="min-h-screen bg-slate-950 text-white font-body selection:bg-cyan-500 selection:text-black relative overflow-x-hidden">
         {/* Interactive Customizer Bar */}
         <div className="sticky top-0 z-50 w-full">
           <AnimatePresence initial={false}>
@@ -84,7 +85,7 @@ export default function DemoLayout({ children, defaultBrand = 'My Brand', slug =
                 <div className="flex items-center gap-3">
                   <button
                     onClick={handleBackToGallery}
-                    className="flex items-center gap-1.5 text-xs text-[#8A8AA0] hover:text-white transition-colors bg-white/5 border border-white/10 px-3.5 py-2 rounded-xl"
+                    className="flex items-center gap-1.5 text-xs text-[#8A8AA0] hover:text-white transition-colors bg-white/5 border border-white/10 px-2.5 py-1.5 sm:px-3.5 sm:py-2 text-[10px] sm:text-xs rounded-xl"
                   >
                     <ArrowLeft size={14} />
                     <span>Back to Gallery</span>
@@ -92,7 +93,7 @@ export default function DemoLayout({ children, defaultBrand = 'My Brand', slug =
 
                   <Link
                     to={`/contact?service=Website&demo=${slug}&brand=${encodeURIComponent(brandName || defaultBrand)}`}
-                    className="flex items-center gap-1.5 text-xs bg-gradient-to-r from-cyan-400 to-purple-500 text-white font-semibold px-4 py-2 rounded-xl hover:shadow-[0_0_15px_rgba(0,212,255,0.4)] transition-all hover:scale-[1.02]"
+                    className="flex items-center gap-1.5 text-xs bg-gradient-to-r from-cyan-400 to-purple-500 text-white font-semibold px-2.5 py-1.5 sm:px-4 sm:py-2 text-[10px] sm:text-xs rounded-xl hover:shadow-[0_0_15px_rgba(0,212,255,0.4)] transition-all hover:scale-[1.02]"
                   >
                     <span>Get This Site</span>
                     <Send size={12} />
@@ -134,5 +135,26 @@ export default function DemoLayout({ children, defaultBrand = 'My Brand', slug =
         </div>
       </div>
     </DemoContext.Provider>
+  );
+}
+
+// Reusable Multi-Page Link that preserves the ?brand parameter automatically
+export function DemoLink({ to, children, className = '', activeClassName = '', onClick }) {
+  const { brandName, slug, currentSubpage } = useDemo();
+  const isHome = to === '/' || to === 'home' || to === '';
+  const subPath = isHome ? '' : `/${to}`;
+  const targetUrl = `/demos/${slug}${subPath}?brand=${encodeURIComponent(brandName)}`;
+
+  // Determine if active
+  const isActive = currentSubpage === to || (isHome && (currentSubpage === 'home' || currentSubpage === ''));
+
+  return (
+    <Link
+      to={targetUrl}
+      onClick={onClick}
+      className={`${className} ${isActive ? activeClassName : ''}`}
+    >
+      {children}
+    </Link>
   );
 }

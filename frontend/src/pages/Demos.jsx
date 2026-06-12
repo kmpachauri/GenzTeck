@@ -36,13 +36,13 @@ export default function Demos() {
         <Suspense fallback={null}>
           <DemosBackground />
         </Suspense>
-        <div className="max-w-[1200px] mx-auto px-6 relative z-10">
+        <div className="max-w-[1200px] mx-auto px-4 sm:px-6 md:px-8 lg:px-12 relative z-10">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}
             className="inline-flex items-center gap-2 text-cyan-400 text-xs font-semibold tracking-[3px] uppercase mb-5">
             <span className="w-6 h-px bg-cyan-400" />Interactive Showcases<span className="w-6 h-px bg-cyan-400" />
           </motion.div>
           <motion.h1 initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.1 }}
-            className="text-[clamp(2.8rem,5vw,4.5rem)] font-bold font-heading leading-[1.1] mb-6">
+            className="text-[clamp(1.8rem,5vw,4.5rem)] font-bold font-heading leading-[1.1] mb-6">
             Explore Our Live <span className="text-gradient">Website Demos</span>
           </motion.h1>
           <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.2 }}
@@ -54,14 +54,14 @@ export default function Demos() {
 
       {/* Demo Cards Grid Section */}
       <section className="py-24 relative z-10 bg-slate-950/20">
-        <div className="max-w-[1200px] mx-auto px-6">
+        <div className="max-w-[1200px] mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
           <SectionHeader
             label="Live Demonstrations"
             title={<>Select an <span className="text-gradient">Industry Template</span></>}
             subtitle="Each template features responsive, high-performance UI suitable for modern businesses."
           />
 
-          <StaggerReveal className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" staggerDelay={0.05}>
+          <StaggerReveal className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8" staggerDelay={0.05}>
             {demoTemplates.map((template, idx) => (
               <StaggerItem key={template.slug} direction="up">
                 <DemoCard template={template} />
@@ -73,14 +73,14 @@ export default function Demos() {
 
       {/* Early Access / Personalized Request Form */}
       <section className="py-28 bg-grid relative z-10 border-t border-white/[0.04]" id="request-demo">
-        <div className="max-w-[700px] mx-auto px-6">
+        <div className="max-w-[700px] mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
           <SectionHeader
             label="Custom Specifications"
             title={<>Request a <span className="text-gradient">Personalized Setup</span></>}
             subtitle="Need something tailored specifically to your backend flows? Tell us about your business goals and we will set up a private demo."
           />
           <ScrollReveal>
-            <div className="glass rounded-3xl border border-white/[0.08] p-8 md:p-10 relative overflow-hidden">
+            <div className="glass rounded-3xl border border-white/[0.08] p-5 sm:p-8 md:p-10 relative overflow-hidden">
               <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(0,212,255,0.04)_0%,transparent_60%)]" />
               <div className="relative z-10">
                 {status === 'success' ? (

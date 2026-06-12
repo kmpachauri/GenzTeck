@@ -174,17 +174,36 @@ function AppContent() {
               {/* Main Demos Page */}
               <Route path="/demos"          element={<Demos demos={data.demos} />} />
 
-              {/* 10 Interactive Live Demo Website Templates */}
-              <Route path="/demos/restaurant"        element={<RestaurantDemo />} />
-              <Route path="/demos/gym"               element={<GymDemo />} />
-              <Route path="/demos/real-estate"       element={<RealEstateDemo />} />
-              <Route path="/demos/salon"             element={<SalonDemo />} />
-              <Route path="/demos/clinic"            element={<ClinicDemo />} />
-              <Route path="/demos/school"            element={<SchoolDemo />} />
-              <Route path="/demos/hotel"             element={<HotelDemo />} />
-              <Route path="/demos/construction"      element={<ConstructionDemo />} />
-              <Route path="/demos/digital-marketing" element={<DigitalMarketingDemo />} />
-              <Route path="/demos/ecommerce"          element={<EcommerceDemo />} />
+              {/* 10 Interactive Live Demo Website Templates & Nested Subpages */}
+              <Route path="/demos/restaurant"                 element={<RestaurantDemo subpage="home" />} />
+              <Route path="/demos/restaurant/:subpage"         element={<RestaurantDemo />} />
+
+              <Route path="/demos/gym"                        element={<GymDemo subpage="home" />} />
+              <Route path="/demos/gym/:subpage"                element={<GymDemo />} />
+
+              <Route path="/demos/real-estate"                element={<RealEstateDemo subpage="home" />} />
+              <Route path="/demos/real-estate/:subpage"        element={<RealEstateDemo />} />
+
+              <Route path="/demos/salon"                      element={<SalonDemo subpage="home" />} />
+              <Route path="/demos/salon/:subpage"             element={<SalonDemo />} />
+
+              <Route path="/demos/clinic"                     element={<ClinicDemo subpage="home" />} />
+              <Route path="/demos/clinic/:subpage"            element={<ClinicDemo />} />
+
+              <Route path="/demos/school"                     element={<SchoolDemo subpage="home" />} />
+              <Route path="/demos/school/:subpage"            element={<SchoolDemo />} />
+
+              <Route path="/demos/hotel"                      element={<HotelDemo subpage="home" />} />
+              <Route path="/demos/hotel/:subpage"             element={<HotelDemo />} />
+
+              <Route path="/demos/construction"               element={<ConstructionDemo subpage="home" />} />
+              <Route path="/demos/construction/:subpage"      element={<ConstructionDemo />} />
+
+              <Route path="/demos/digital-marketing"          element={<DigitalMarketingDemo subpage="home" />} />
+              <Route path="/demos/digital-marketing/:subpage"  element={<DigitalMarketingDemo />} />
+
+              <Route path="/demos/ecommerce"                  element={<EcommerceDemo subpage="home" />} />
+              <Route path="/demos/ecommerce/:subpage"          element={<EcommerceDemo />} />
 
               <Route path="/demo-videos"    element={<DemoVideos videos={data.demoVideos} />} />
               <Route path="/testimonials"   element={<Testimonials testimonials={data.testimonials} />} />
