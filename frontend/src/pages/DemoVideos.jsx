@@ -150,18 +150,26 @@ export default function DemoVideos({ videos }) {
                     <Sparkles size={14} /> Interactive Demo Gallery
                   </p>
                   <h2 className="font-heading font-bold text-white text-2xl md:text-4xl leading-tight mb-3">
-                    Want to explore the full website experiences?
+                    Explore demos, then launch your own project
                   </h2>
                   <p className="text-[#8A8AA0] text-sm md:text-base leading-relaxed">
-                    Browse live-style demos across business categories and see how your own digital experience can look before we build it.
+                    Browse live-style demos across business categories, then start a custom build with the exact features your business needs.
                   </p>
                 </div>
-                <Link
-                  to="/demos"
-                  className="inline-flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-xl font-semibold bg-gradient-to-r from-cyan-400 to-purple-500 text-white hover:-translate-y-0.5 transition-all shadow-btn-primary hover:shadow-btn-primary-hover whitespace-nowrap"
-                >
-                  Browse Demos <ArrowRight size={18} />
-                </Link>
+                <div className="flex flex-col sm:flex-row md:flex-col lg:flex-row gap-3 shrink-0">
+                  <Link
+                    to="/demos"
+                    className="inline-flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-xl font-semibold bg-gradient-to-r from-cyan-400 to-purple-500 text-white hover:-translate-y-0.5 transition-all shadow-btn-primary hover:shadow-btn-primary-hover whitespace-nowrap"
+                  >
+                    Browse Demos <ArrowRight size={18} />
+                  </Link>
+                  <Link
+                    to="/contact"
+                    className="inline-flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-xl font-semibold border border-white/15 bg-white/[0.06] text-white hover:bg-white/[0.1] hover:border-cyan-400/35 hover:-translate-y-0.5 transition-all whitespace-nowrap"
+                  >
+                    Start Your Project <ArrowRight size={18} />
+                  </Link>
+                </div>
               </div>
             </div>
           </ScrollReveal>

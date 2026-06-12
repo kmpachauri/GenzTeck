@@ -1,7 +1,8 @@
 import { useState, Suspense, lazy } from 'react';
 import { publicAPI } from '../api';
 import { motion } from 'framer-motion';
-import { ArrowRight, Loader2, Check, Sparkles } from 'lucide-react';
+import { ArrowRight, Loader2, Check, Rocket, Sparkles } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { ScrollReveal, StaggerReveal, StaggerItem, SectionHeader } from '../components/ui/Motion';
 import { demoTemplates } from '../data/demoTemplates';
 import DemoCard from '../components/DemoCard';
@@ -143,8 +144,8 @@ export default function Demos() {
                       <label className="block text-xs font-semibold text-[#8A8AA0] uppercase tracking-wider mb-2">Which Industry Demo Are You Interested In? *</label>
                       <select name="demoType" value={form.demoType} onChange={handleChange} required
                         className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm focus:outline-none glow-input transition-all appearance-none cursor-pointer">
-                        <option value="">Select a demo...</option>
-                        {SERVICE_OPTIONS.map(s => <option key={s} value={s}>{s}</option>)}
+                        <option value="" className="bg-slate-950 text-white">Select a demo...</option>
+                        {SERVICE_OPTIONS.map(s => <option key={s} value={s} className="bg-slate-950 text-white">{s}</option>)}
                       </select>
                     </div>
                     <div>
@@ -164,6 +165,55 @@ export default function Demos() {
                     </button>
                   </form>
                 )}
+              </div>
+            </div>
+          </ScrollReveal>
+        </div>
+      </section>
+
+      <section className="pb-24 relative z-10">
+        <div className="max-w-[1200px] mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
+          <ScrollReveal>
+            <div className="relative overflow-hidden rounded-3xl border border-white/[0.08] bg-[#080814] p-8 md:p-10">
+              <Suspense fallback={null}>
+                <DemosBackground />
+              </Suspense>
+              <motion.div
+                className="absolute -right-14 -top-16 h-44 w-44 rounded-full border border-cyan-400/20"
+                animate={{ rotate: 360 }}
+                transition={{ duration: 24, repeat: Infinity, ease: 'linear' }}
+              />
+              <motion.div
+                className="absolute right-8 bottom-8 hidden md:block w-40 rounded-2xl border border-white/10 bg-white/[0.045] p-4"
+                animate={{ y: [0, -12, 0], rotate: [0, 1.5, 0] }}
+                transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
+              >
+                <div className="h-2 w-20 rounded-full bg-cyan-400/40 mb-4" />
+                <div className="space-y-2">
+                  <div className="h-7 rounded-lg bg-white/10" />
+                  <div className="h-7 rounded-lg bg-purple-400/15" />
+                  <div className="h-7 rounded-lg bg-cyan-400/15" />
+                </div>
+              </motion.div>
+              <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(0,212,255,0.18)_0%,transparent_45%),radial-gradient(ellipse_at_bottom_left,rgba(123,47,190,0.18)_0%,transparent_50%)]" />
+              <div className="relative z-10 flex flex-col md:flex-row md:items-center md:justify-between gap-8">
+                <div className="max-w-2xl">
+                  <p className="inline-flex items-center gap-2 text-cyan-400 text-xs font-semibold uppercase tracking-[3px] mb-4">
+                    <Rocket size={14} /> Ready to Build
+                  </p>
+                  <h2 className="font-heading font-bold text-white text-2xl md:text-4xl leading-tight mb-3">
+                    Found a demo you like? Let's turn it into your real website.
+                  </h2>
+                  <p className="text-[#8A8AA0] text-sm md:text-base leading-relaxed">
+                    We will customize the design, content, features, admin panel, and integrations around your business goals.
+                  </p>
+                </div>
+                <Link
+                  to="/contact"
+                  className="inline-flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-xl font-semibold bg-gradient-to-r from-cyan-400 to-purple-500 text-white hover:-translate-y-0.5 transition-all shadow-btn-primary hover:shadow-btn-primary-hover whitespace-nowrap"
+                >
+                  Start Your Project <ArrowRight size={18} />
+                </Link>
               </div>
             </div>
           </ScrollReveal>

@@ -1,6 +1,6 @@
 import { useState, Suspense, lazy } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, ExternalLink, CheckCircle } from 'lucide-react';
+import { ArrowRight, ExternalLink, CheckCircle, Sparkles } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { ScrollReveal, SectionHeader, Badge } from '../components/ui/Motion';
 
@@ -12,7 +12,7 @@ const defaultProjects = [
     title: 'Prakrit Astro',
     type: 'Astrology Platform',
     url: 'https://prakritastro.com',
-    image: 'https://images.unsplash.com/photo-1515942696888-c54ed430a967?auto=format&fit=crop&w=800&q=80',
+    image: '/images/projects_mockup.png',
     color: '#7B2FBE',
     category: 'web',
     problem: 'Needed a premium digital presence for astrological consultations with online booking and payment.',
@@ -120,7 +120,12 @@ export default function Projects({ projects }) {
                       style={{ minHeight: 280, background: `linear-gradient(135deg, ${project.color}10, rgba(0,0,0,0.3))` }}>
                       {project.image ? (
                         <img src={project.image} alt={project.title}
-                          className="w-full h-full object-cover opacity-80 group-hover:scale-103 transition-transform duration-700" loading="lazy" />
+                          className="w-full h-full object-cover opacity-80 group-hover:scale-103 transition-transform duration-700"
+                          loading="lazy"
+                          onError={(e) => {
+                            e.currentTarget.onerror = null;
+                            e.currentTarget.src = '/images/projects_mockup.png';
+                          }} />
                       ) : (
                         <div className="absolute inset-0 flex flex-col items-center justify-center p-8">
                           <div className="w-full max-w-xs">
@@ -219,6 +224,55 @@ export default function Projects({ projects }) {
           })}
         </div>
       </div>
+
+      <section className="pb-20">
+        <div className="max-w-[1200px] mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
+          <ScrollReveal>
+            <div className="relative overflow-hidden rounded-3xl border border-white/[0.08] bg-[#080814] p-8 md:p-10">
+              <Suspense fallback={null}>
+                <ProjectsBackground />
+              </Suspense>
+              <motion.div
+                className="absolute -right-12 -top-16 h-40 w-40 rounded-full border border-cyan-400/20"
+                animate={{ rotate: 360 }}
+                transition={{ duration: 24, repeat: Infinity, ease: 'linear' }}
+              />
+              <motion.div
+                className="absolute bottom-8 right-8 hidden md:block h-24 w-36 rounded-2xl border border-white/10 bg-white/[0.04]"
+                animate={{ y: [0, -10, 0], rotate: [0, 1.5, 0] }}
+                transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
+              >
+                <div className="m-3 h-2 w-16 rounded-full bg-cyan-400/40" />
+                <div className="mx-3 mt-4 grid grid-cols-3 gap-2">
+                  {[0, 1, 2, 3, 4, 5].map(item => (
+                    <div key={item} className="h-4 rounded bg-white/10" />
+                  ))}
+                </div>
+              </motion.div>
+              <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(0,212,255,0.16)_0%,transparent_45%),radial-gradient(ellipse_at_bottom_left,rgba(123,47,190,0.16)_0%,transparent_50%)]" />
+              <div className="relative z-10 flex flex-col md:flex-row md:items-center md:justify-between gap-8">
+                <div className="max-w-2xl">
+                  <p className="inline-flex items-center gap-2 text-cyan-400 text-xs font-semibold uppercase tracking-[3px] mb-4">
+                    <Sparkles size={14} /> Explore More Concepts
+                  </p>
+                  <h2 className="font-heading font-bold text-white text-2xl md:text-4xl leading-tight mb-3">
+                    Want to see more ready-made website experiences?
+                  </h2>
+                  <p className="text-[#8A8AA0] text-sm md:text-base leading-relaxed">
+                    Browse our demo gallery to preview modern layouts for restaurants, clinics, schools, salons, hotels, real estate, e-commerce, and more.
+                  </p>
+                </div>
+                <Link
+                  to="/demos"
+                  className="inline-flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-xl font-semibold bg-gradient-to-r from-cyan-400 to-purple-500 text-white hover:-translate-y-0.5 transition-all shadow-btn-primary hover:shadow-btn-primary-hover whitespace-nowrap"
+                >
+                  Browse Demos <ArrowRight size={18} />
+                </Link>
+              </div>
+            </div>
+          </ScrollReveal>
+        </div>
+      </section>
 
       {/* CTA */}
       <section className="py-24 text-center border-t border-white/[0.04]" style={{ background: 'var(--color-surface)' }}>
