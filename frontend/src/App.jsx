@@ -26,6 +26,18 @@ const TermsConditions = lazy(() => import('./pages/TermsConditions'));
 const RefundPolicy = lazy(() => import('./pages/RefundPolicy'));
 const Payment     = lazy(() => import('./pages/Payment'));
 
+// Dynamic Demo Preview Pages
+const RestaurantDemo      = lazy(() => import('./pages/demos/RestaurantDemo'));
+const GymDemo             = lazy(() => import('./pages/demos/GymDemo'));
+const RealEstateDemo      = lazy(() => import('./pages/demos/RealEstateDemo'));
+const SalonDemo           = lazy(() => import('./pages/demos/SalonDemo'));
+const ClinicDemo          = lazy(() => import('./pages/demos/ClinicDemo'));
+const SchoolDemo          = lazy(() => import('./pages/demos/SchoolDemo'));
+const HotelDemo           = lazy(() => import('./pages/demos/HotelDemo'));
+const ConstructionDemo     = lazy(() => import('./pages/demos/ConstructionDemo'));
+const DigitalMarketingDemo = lazy(() => import('./pages/demos/DigitalMarketingDemo'));
+const EcommerceDemo        = lazy(() => import('./pages/demos/EcommerceDemo'));
+
 // Page fallback
 function PageSkeleton() {
   return (
@@ -104,6 +116,9 @@ function AppContent() {
   const [showLoader, setShowLoader] = useState(true);
   const location = useLocation();
 
+  // Hide header and footer when viewing templates (sub-routes of /demos/)
+  const isDemoPreview = location.pathname.startsWith('/demos/') && location.pathname !== '/demos/';
+
   // Lenis smooth scroll
   useEffect(() => {
     const lenis = new Lenis({
@@ -144,7 +159,7 @@ function AppContent() {
       <CursorGlow />
 
       <ScrollRestoration />
-      <Navbar settings={data.settings} />
+      {!isDemoPreview && <Navbar settings={data.settings} />}
 
       <main>
         <Suspense fallback={<PageSkeleton />}>
@@ -155,7 +170,22 @@ function AppContent() {
               <Route path="/services"       element={<Services services={data.services} />} />
               <Route path="/products"       element={<Products products={data.products} />} />
               <Route path="/projects"       element={<Projects projects={data.projects} />} />
+              
+              {/* Main Demos Page */}
               <Route path="/demos"          element={<Demos demos={data.demos} />} />
+
+              {/* 10 Interactive Live Demo Website Templates */}
+              <Route path="/demos/restaurant"        element={<RestaurantDemo />} />
+              <Route path="/demos/gym"               element={<GymDemo />} />
+              <Route path="/demos/real-estate"       element={<RealEstateDemo />} />
+              <Route path="/demos/salon"             element={<SalonDemo />} />
+              <Route path="/demos/clinic"            element={<ClinicDemo />} />
+              <Route path="/demos/school"            element={<SchoolDemo />} />
+              <Route path="/demos/hotel"             element={<HotelDemo />} />
+              <Route path="/demos/construction"      element={<ConstructionDemo />} />
+              <Route path="/demos/digital-marketing" element={<DigitalMarketingDemo />} />
+              <Route path="/demos/ecommerce"          element={<EcommerceDemo />} />
+
               <Route path="/demo-videos"    element={<DemoVideos videos={data.demoVideos} />} />
               <Route path="/testimonials"   element={<Testimonials testimonials={data.testimonials} />} />
               <Route path="/blog"           element={<Blog blogs={data.blogs} />} />
@@ -170,12 +200,12 @@ function AppContent() {
         </Suspense>
       </main>
 
-      <Footer settings={data.settings} />
-      <FloatingSocial settings={data.settings} />
+      {!isDemoPreview && <Footer settings={data.settings} />}
+      {!isDemoPreview && <FloatingSocial settings={data.settings} />}
 
       {/* Back to Top */}
       <AnimatePresence>
-        {visible && (
+        {visible && !isDemoPreview && (
           <motion.button
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
