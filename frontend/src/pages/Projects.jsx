@@ -4,6 +4,8 @@ import { ArrowRight, ExternalLink, CheckCircle, Sparkles } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { ScrollReveal, SectionHeader, Badge } from '../components/ui/Motion';
 
+const MotionLink = motion(Link);
+
 const ProjectsBackground = lazy(() => import('../components/3d/PageBackgrounds').then(m => ({ default: m.ProjectsBackground })));
 
 const defaultProjects = [
@@ -284,10 +286,22 @@ export default function Projects({ projects }) {
             <p className="text-[#8A8AA0] mb-10 text-lg max-w-xl mx-auto font-light">
               Let's build a custom solution that elevates your brand and drives digital results.
             </p>
-            <Link to="/contact"
-              className="inline-flex items-center gap-2 px-8 py-4 rounded-full font-semibold bg-gradient-to-r from-cyan-400 to-purple-500 text-white shadow-btn-primary hover:shadow-btn-primary-hover hover:-translate-y-0.5 transition-all text-base">
-              Contact GenzTeck <ArrowRight size={18} />
-            </Link>
+            <div className="flex gap-4 justify-center flex-wrap items-center">
+              <Link to="/contact"
+                className="inline-flex items-center gap-2 px-8 py-4 rounded-full font-semibold bg-gradient-to-r from-cyan-400 to-purple-500 text-white shadow-btn-primary hover:shadow-btn-primary-hover hover:-translate-y-0.5 transition-all text-base">
+                Contact GenzTeck <ArrowRight size={18} />
+              </Link>
+              <MotionLink
+                to="/demos"
+                whileHover={{ y: -4, scale: 1.02 }}
+                whileTap={{ y: 0 }}
+                className="relative inline-flex items-center gap-2 px-8 py-4 rounded-full font-semibold border border-cyan-500/30 bg-cyan-500/5 text-cyan-400 hover:bg-cyan-500/10 hover:border-cyan-400/50 hover:text-white overflow-hidden group shadow-[0_4px_0_0_rgba(0,212,255,0.2),0_0_15px_rgba(0,212,255,0.1)] active:translate-y-[4px] active:shadow-[0_0_0_0_transparent] transition-all duration-200 text-base"
+              >
+                {/* Shimmer sweep */}
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-cyan-400/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-in-out pointer-events-none" />
+                Browse Demos <ExternalLink size={18} className="group-hover:rotate-12 group-hover:scale-110 transition-transform duration-300" />
+              </MotionLink>
+            </div>
           </ScrollReveal>
         </div>
       </section>

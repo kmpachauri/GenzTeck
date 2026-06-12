@@ -2,9 +2,11 @@ import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { publicAPI } from '../api';
 import { motion } from 'framer-motion';
-import { Clock, Calendar, ArrowLeft, User } from 'lucide-react';
+import { Clock, Calendar, ArrowLeft, User, ExternalLink } from 'lucide-react';
 import { Badge } from '../components/ui/Motion';
 import { BlogBackground } from '../components/3d/PageBackgrounds';
+
+const MotionLink = motion(Link);
 
 export default function BlogPost() {
   const { slug } = useParams();
@@ -139,13 +141,23 @@ export default function BlogPost() {
               <p className="text-[#8A8AA0] mb-10 text-lg">
                 Get a free consultation and project estimate from GenzTeck.
               </p>
-              <div className="flex gap-4 justify-center flex-wrap">
+              <div className="flex gap-4 justify-center flex-wrap items-center">
                 <Link to="/contact"
-                  className="px-7 py-3.5 rounded-full font-semibold bg-gradient-to-r from-cyan-400 to-purple-500 text-white hover:-translate-y-0.5 transition-all shadow-btn-primary">
+                  className="px-7 py-3.5 rounded-full font-semibold bg-gradient-to-r from-cyan-400 to-purple-500 text-white shadow-btn-primary hover:shadow-btn-primary-hover hover:-translate-y-0.5 transition-all text-base">
                   Start a Project →
                 </Link>
+                <MotionLink
+                  to="/demos"
+                  whileHover={{ y: -4, scale: 1.02 }}
+                  whileTap={{ y: 0 }}
+                  className="relative inline-flex items-center gap-2 px-7 py-3.5 rounded-full font-semibold border border-cyan-500/30 bg-cyan-500/5 text-cyan-400 hover:bg-cyan-500/10 hover:border-cyan-400/50 hover:text-white overflow-hidden group shadow-[0_4px_0_0_rgba(0,212,255,0.2),0_0_15px_rgba(0,212,255,0.1)] active:translate-y-[4px] active:shadow-[0_0_0_0_transparent] transition-all duration-200 text-base"
+                >
+                  {/* Shimmer sweep */}
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-cyan-400/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-in-out pointer-events-none" />
+                  Browse Demos <ExternalLink size={18} className="group-hover:rotate-12 group-hover:scale-110 transition-transform duration-300" />
+                </MotionLink>
                 <Link to="/blog"
-                  className="px-7 py-3.5 rounded-full font-semibold border border-cyan-400/30 text-cyan-400 hover:bg-cyan-400/10 hover:border-cyan-400 transition-all">
+                  className="px-7 py-3.5 rounded-full font-semibold border border-white/10 text-[#8A8AA0] hover:text-white hover:border-white/20 transition-all text-base">
                   Read More Articles
                 </Link>
               </div>

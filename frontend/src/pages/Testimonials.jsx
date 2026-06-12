@@ -5,6 +5,8 @@ import { Suspense, lazy } from 'react';
 import { Link } from 'react-router-dom';
 import { ScrollReveal, StaggerReveal, StaggerItem, Badge, CountUpStat } from '../components/ui/Motion';
 
+const MotionLink = motion(Link);
+
 const TestimonialsBackground = lazy(() => import('../components/3d/PageBackgrounds').then(m => ({ default: m.TestimonialsBackground })));
 
 const defaultTestimonials = [
@@ -202,10 +204,16 @@ export default function Testimonials({ testimonials }) {
                     className="inline-flex items-center justify-center gap-2 px-7 py-4 rounded-full font-semibold bg-gradient-to-r from-cyan-400 to-purple-500 text-white shadow-btn-primary hover:shadow-btn-primary-hover hover:-translate-y-0.5 transition-all text-base w-full sm:w-auto">
                     Get Started Today <ArrowRight size={18} />
                   </Link>
-                  <Link to="/demos"
-                    className="inline-flex items-center justify-center gap-2 px-7 py-4 rounded-full font-semibold border border-white/15 bg-white/[0.06] text-white hover:bg-white/[0.1] hover:border-cyan-400/35 hover:-translate-y-0.5 transition-all text-base w-full sm:w-auto">
-                    Browse Demos <ArrowRight size={18} />
-                  </Link>
+                  <MotionLink
+                    to="/demos"
+                    whileHover={{ y: -4, scale: 1.02 }}
+                    whileTap={{ y: 0 }}
+                    className="relative inline-flex items-center justify-center gap-2 px-7 py-4 rounded-full font-semibold border border-cyan-500/30 bg-cyan-500/5 text-cyan-400 hover:bg-cyan-500/10 hover:border-cyan-400/50 hover:text-white overflow-hidden group shadow-[0_4px_0_0_rgba(0,212,255,0.2),0_0_15px_rgba(0,212,255,0.1)] active:translate-y-[4px] active:shadow-[0_0_0_0_transparent] transition-all duration-200 text-base w-full sm:w-auto"
+                  >
+                    {/* Shimmer sweep */}
+                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-cyan-400/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-in-out pointer-events-none" />
+                    Browse Demos <ExternalLink size={18} className="group-hover:rotate-12 group-hover:scale-110 transition-transform duration-300" />
+                  </MotionLink>
                 </div>
               </div>
             </div>

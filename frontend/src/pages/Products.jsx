@@ -7,6 +7,8 @@ import { publicAPI } from '../api';
 
 const ProductsBackground = lazy(() => import('../components/3d/PageBackgrounds').then(m => ({ default: m.ProductsBackground })));
 
+const MotionLink = motion(Link);
+
 const SERVICE_OPTIONS = ['Web Development', 'Mobile App', 'Restaurant System', 'GPS Tracking', 'Automation', 'E-Commerce', 'Admin Dashboard', 'SaaS', 'Other'];
 
 // ===== CANONICAL PRODUCT LIST (updated with websiteUrl mocks and sorted) =====
@@ -406,7 +408,7 @@ export default function Products({ products }) {
             >
               {/* Shimmer sweep */}
               <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-in-out pointer-events-none" />
-              Browse Website Demos <ExternalLink size={14} className="group-hover:rotate-12 transition-transform duration-300" />
+              Browse Demos <ExternalLink size={14} className="group-hover:rotate-12 transition-transform duration-300" />
             </Link>
           </motion.div>
         </div>
@@ -547,10 +549,16 @@ export default function Products({ products }) {
                 className="inline-flex items-center gap-2 px-8 py-4 rounded-full font-semibold bg-gradient-to-r from-cyan-400 to-purple-500 text-white shadow-btn-primary hover:shadow-btn-primary-hover hover:-translate-y-0.5 transition-all text-base">
                 Let's Build Together <ArrowRight size={18} />
               </Link>
-              <Link to="/demos"
-                className="inline-flex items-center gap-2 px-8 py-4 rounded-full font-semibold border border-white/10 bg-white/[0.02] text-[#8A8AA0] hover:text-white hover:border-white/20 hover:bg-white/[0.04] transition-all text-base">
-                Browse Website Demos <ExternalLink size={18} />
-              </Link>
+              <MotionLink
+                to="/demos"
+                whileHover={{ y: -4, scale: 1.02 }}
+                whileTap={{ y: 0 }}
+                className="relative inline-flex items-center gap-2 px-8 py-4 rounded-full font-semibold border border-cyan-500/30 bg-cyan-500/5 text-cyan-400 hover:bg-cyan-500/10 hover:border-cyan-400/50 hover:text-white overflow-hidden group shadow-[0_4px_0_0_rgba(0,212,255,0.2),0_0_15px_rgba(0,212,255,0.1)] active:translate-y-[4px] active:shadow-[0_0_0_0_transparent] transition-all duration-200 text-base"
+              >
+                {/* Shimmer sweep */}
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-cyan-400/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-in-out pointer-events-none" />
+                Browse Demos <ExternalLink size={18} className="group-hover:rotate-12 group-hover:scale-110 transition-transform duration-300" />
+              </MotionLink>
             </div>
           </ScrollReveal>
         </div>

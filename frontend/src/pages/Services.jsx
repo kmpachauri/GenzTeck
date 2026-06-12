@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { ArrowRight, CheckCircle } from 'lucide-react';
+import { ArrowRight, CheckCircle, Sparkles } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { Suspense, lazy } from 'react';
 import { ScrollReveal, StaggerReveal, StaggerItem, SectionHeader, Badge } from '../components/ui/Motion';
@@ -46,8 +46,6 @@ export default function Services({ services }) {
           </motion.p>
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.4 }}
             className="flex gap-3 justify-center flex-wrap">
-            <Badge variant="default">{data.length} Services Available</Badge>
-            <Badge variant="green">₹-Friendly Pricing</Badge>
             <Badge variant="amber">Fast Delivery</Badge>
           </motion.div>
         </div>
@@ -123,18 +121,49 @@ export default function Services({ services }) {
       {/* CTA */}
       <section className="py-24 relative overflow-hidden"
         style={{ background: 'var(--color-surface)' }}>
-        <div className="max-w-[1200px] mx-auto px-6 text-center">
+        <div className="max-w-[1200px] mx-auto px-6">
           <ScrollReveal>
-            <h2 className="text-[clamp(1.8rem,3vw,2.5rem)] font-bold font-heading mb-4">
-              Not Sure Which Service You Need?
-            </h2>
-            <p className="text-[#8A8AA0] mb-10 text-lg max-w-xl mx-auto">
-              Talk to us and we'll figure out the best solution for your specific business challenge.
-            </p>
-            <Link to="/contact"
-              className="inline-flex items-center gap-2 px-8 py-4 rounded-full font-semibold bg-gradient-to-r from-cyan-400 to-purple-500 text-white shadow-btn-primary hover:shadow-btn-primary-hover hover:-translate-y-0.5 transition-all text-base">
-              Book a Free Consultation <ArrowRight size={18} />
-            </Link>
+            <div className="relative overflow-hidden rounded-3xl border border-white/[0.08] bg-[#080814] p-8 md:p-10 text-center">
+              <Suspense fallback={null}>
+                <BlueprintBackground />
+              </Suspense>
+              <motion.div
+                className="absolute -right-14 -top-16 h-44 w-44 rounded-full border border-cyan-400/20"
+                animate={{ rotate: 360 }}
+                transition={{ duration: 24, repeat: Infinity, ease: 'linear' }}
+              />
+              <motion.div
+                className="absolute left-8 bottom-8 hidden md:grid grid-cols-2 gap-2 opacity-70"
+                animate={{ y: [0, -10, 0] }}
+                transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
+              >
+                {[0, 1, 2, 3].map(item => (
+                  <div key={item} className="h-8 w-16 rounded-lg border border-cyan-400/20 bg-cyan-400/10" />
+                ))}
+              </motion.div>
+              <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(0,212,255,0.18)_0%,transparent_45%),radial-gradient(ellipse_at_bottom_left,rgba(123,47,190,0.18)_0%,transparent_50%)]" />
+              <div className="relative z-10 max-w-3xl mx-auto">
+                <p className="inline-flex items-center gap-2 text-cyan-400 text-xs font-semibold uppercase tracking-[3px] mb-4">
+                  <Sparkles size={14} /> Plan With Confidence
+                </p>
+                <h2 className="text-[clamp(1.8rem,3vw,2.7rem)] font-bold font-heading mb-4">
+                  Not Sure Which Service You Need?
+                </h2>
+                <p className="text-[#8A8AA0] mb-9 text-lg max-w-2xl mx-auto">
+                  Talk to us, or browse our demos first to understand what your digital experience can look like.
+                </p>
+                <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+                  <Link to="/contact"
+                    className="inline-flex items-center justify-center gap-2 px-7 py-4 rounded-xl font-semibold bg-gradient-to-r from-cyan-400 to-purple-500 text-white shadow-btn-primary hover:shadow-btn-primary-hover hover:-translate-y-0.5 transition-all text-base w-full sm:w-auto">
+                    Book a Free Consultation <ArrowRight size={18} />
+                  </Link>
+                  <Link to="/demos"
+                    className="inline-flex items-center justify-center gap-2 px-7 py-4 rounded-xl font-semibold border border-white/15 bg-white/[0.06] text-white hover:bg-white/[0.1] hover:border-cyan-400/35 hover:-translate-y-0.5 transition-all text-base w-full sm:w-auto">
+                    Browse Demos <ArrowRight size={18} />
+                  </Link>
+                </div>
+              </div>
+            </div>
           </ScrollReveal>
         </div>
       </section>
