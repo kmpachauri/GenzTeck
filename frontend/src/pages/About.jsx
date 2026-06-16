@@ -56,14 +56,17 @@ const approachSteps = [
 
 export default function About() {
   return (
-    <div style={{ background: 'var(--color-bg)', minHeight: '100vh' }}>
+    <div className="relative min-h-screen overflow-x-hidden bg-[#070711]">
+      {/* Background Gradient */}
+      <div className="absolute inset-0 bg-gradient-to-br from-[#070711] via-[#0D0D1E] to-[#0A0A1A] z-0 pointer-events-none" />
+
+      <Suspense fallback={null}>
+        <AboutBackground />
+      </Suspense>
 
       {/* Hero */}
-      <section className="relative pt-32 pb-20 text-center overflow-hidden"
-        style={{ background: 'linear-gradient(135deg, #070711 0%, #0D0D1E 50%, #0A0A1A 100%)' }}>
-        <Suspense fallback={null}>
-          <AboutBackground />
-        </Suspense>
+      <section className="relative pt-32 pb-24 text-center overflow-hidden z-10"
+        style={{ background: 'transparent' }}>
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(123,47,190,0.08)_0%,transparent_70%)]" />
         <div className="max-w-[1200px] mx-auto px-6 relative z-10">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}
@@ -92,10 +95,16 @@ export default function About() {
             </MotionLink>
           </motion.div>
         </div>
+
+        {/* Cyber Divider & Bottom Fade */}
+        <div className="absolute bottom-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-cyan-500/35 to-transparent z-20">
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-[3px] bg-gradient-to-r from-cyan-400 to-purple-500 rounded-full blur-[1px]" />
+        </div>
+        <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-[#070711] to-transparent pointer-events-none z-10" />
       </section>
 
       {/* Who We Are + Mission/Vision */}
-      <section className="py-28">
+      <section className="py-28 bg-[#070711] relative z-20">
         <div className="max-w-[1200px] mx-auto px-6">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <ScrollReveal direction="left">
@@ -129,7 +138,7 @@ export default function About() {
       </section>
 
       {/* Our Approach (Replaced Timeline) */}
-      <section className="py-28 bg-grid">
+      <section className="py-28 bg-[#070711] bg-grid relative z-10">
         <div className="max-w-[1200px] mx-auto px-6">
           <SectionHeader label="Our Process" title={<>Our <span className="text-gradient">Approach</span></>} />
           <div className="relative">
@@ -227,7 +236,7 @@ export default function About() {
       </section>
 
       {/* Core Values */}
-      <section className="py-28">
+      <section className="py-28 bg-[#070711] relative z-10">
         <div className="max-w-[1200px] mx-auto px-6">
           <SectionHeader label="Core Values" title={<>What <span className="text-gradient">Drives Us</span></>} />
           <StaggerReveal className="grid grid-cols-1 md:grid-cols-2 gap-6" staggerDelay={0.1}>
@@ -247,7 +256,7 @@ export default function About() {
       </section>
 
       {/* What We Build */}
-      <section className="py-28 bg-grid">
+      <section className="py-28 bg-[#070711] bg-grid relative z-10">
         <div className="max-w-[1200px] mx-auto px-6">
           <SectionHeader label="Capabilities" title={<>What We <span className="text-gradient">Build</span></>} />
           <StaggerReveal className="grid grid-cols-1 md:grid-cols-2 gap-4" staggerDelay={0.06}>
@@ -264,7 +273,7 @@ export default function About() {
       </section>
 
       {/* Why Different */}
-      <section className="py-28">
+      <section className="py-28 bg-[#070711] relative z-10">
         <div className="max-w-[1200px] mx-auto px-6">
           <SectionHeader label="Our Edge" title={<>Why We're <span className="text-gradient">Different</span></>} />
           <StaggerReveal className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" staggerDelay={0.08}>
@@ -281,7 +290,7 @@ export default function About() {
       </section>
 
       {/* Tech Stack */}
-      <section className="py-28 bg-grid">
+      <section className="py-28 bg-[#070711] bg-grid relative z-10">
         <div className="max-w-[1200px] mx-auto px-6">
           <SectionHeader
             label="Philosophy"
@@ -309,7 +318,7 @@ export default function About() {
       </section>
 
       {/* CTA */}
-      <section className="py-24 relative overflow-hidden"
+      <section className="py-24 relative overflow-hidden bg-[#070711] z-10"
         style={{ background: 'linear-gradient(135deg, rgba(0,212,255,0.06) 0%, rgba(123,47,190,0.06) 100%)' }}>
         <div className="max-w-[1200px] mx-auto px-6 text-center relative z-10">
           <ScrollReveal>

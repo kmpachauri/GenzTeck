@@ -234,16 +234,18 @@ export default function Home({ data }) {
   }, [isHovered]);
 
   return (
-    <div style={{ background: 'var(--color-bg)' }}>
+    <div className="relative min-h-screen overflow-x-hidden bg-[#070711]">
+      {/* Background Gradient */}
+      <div className="absolute inset-0 bg-gradient-to-br from-[#070711] via-[#0D0D2A] to-[#1A0A2E] z-0 pointer-events-none" />
+
+      {/* 3D Scene */}
+      <Suspense fallback={null}>
+        <Hero3DScene />
+      </Suspense>
 
       {/* ===== HERO ===== */}
-      <section className="relative min-h-screen flex items-center overflow-hidden" id="hero"
-        style={{ background: 'linear-gradient(135deg, #070711 0%, #0D0D2A 50%, #1A0A2E 100%)' }}>
-
-        {/* 3D Scene */}
-        <Suspense fallback={null}>
-          <Hero3DScene />
-        </Suspense>
+      <section className="relative min-h-screen flex items-center overflow-hidden z-10" id="hero"
+        style={{ background: 'transparent' }}>
 
         {/* Background orbs */}
         <div className="absolute inset-0 pointer-events-none">
@@ -346,17 +348,23 @@ export default function Home({ data }) {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 1.5 }}
-          className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-[#5A5A7A] text-xs"
+          className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-[#5A5A7A] text-xs z-10"
         >
           <span className="tracking-widest uppercase">Scroll to explore</span>
           <motion.div animate={{ y: [0, 6, 0] }} transition={{ repeat: Infinity, duration: 1.5 }}>
             <ChevronDown size={16} />
           </motion.div>
         </motion.div>
+
+        {/* Cyber Divider & Bottom Fade */}
+        <div className="absolute bottom-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-cyan-500/35 to-transparent z-20">
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-[3px] bg-gradient-to-r from-cyan-400 to-purple-500 rounded-full blur-[1px]" />
+        </div>
+        <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-[#070711] to-transparent pointer-events-none z-10" />
       </section>
 
       {/* ===== SERVICES PREVIEW ===== */}
-      <section className="py-28 bg-grid relative" id="services-preview">
+      <section className="py-28 bg-[#070711] bg-grid relative z-20" id="services-preview">
         <div className="max-w-[1200px] mx-auto px-6">
           <SectionHeader
             label="What We Do"
@@ -393,7 +401,7 @@ export default function Home({ data }) {
       </section>
 
       {/* ===== WEBSITE DEMOS CAROUSEL ===== */}
-      <section className="py-28 relative bg-[#070711]" id="website-demos">
+      <section className="py-28 relative bg-[#070711] z-10" id="website-demos">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(123,47,190,0.05)_0%,transparent_70%)] pointer-events-none" />
         <div className="max-w-[1200px] mx-auto px-6 relative z-10">
           <div className="text-center mb-12">
@@ -597,7 +605,7 @@ export default function Home({ data }) {
       </section>
 
       {/* ===== PRODUCTS PREVIEW ===== */}
-      <section className="py-28 relative" id="products-preview">
+      <section className="py-28 relative bg-[#070711] z-10" id="products-preview">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(123,47,190,0.06)_0%,transparent_70%)]" />
         <div className="max-w-[1200px] mx-auto px-6 relative z-10">
           <SectionHeader
@@ -668,7 +676,7 @@ export default function Home({ data }) {
       </section>
 
       {/* ===== STATS ===== */}
-      <section className="py-20 bg-grid">
+      <section className="py-20 bg-[#070711] bg-grid relative z-10">
         <div className="max-w-[1200px] mx-auto px-6">
           <div className="glass rounded-3xl border border-white/[0.08] p-12 grid grid-cols-2 md:grid-cols-4 gap-8">
             {[
@@ -684,7 +692,7 @@ export default function Home({ data }) {
       </section>
 
       {/* ===== PROJECTS PREVIEW ===== */}
-      <section className="py-28 relative" id="projects-preview">
+      <section className="py-28 relative bg-[#070711] z-10" id="projects-preview">
         <div className="max-w-[1200px] mx-auto px-6">
           <SectionHeader
             label="Our Work"
@@ -746,7 +754,7 @@ export default function Home({ data }) {
       </section>
 
       {/* ===== WHY CHOOSE US ===== */}
-      <section className="py-28 bg-grid" id="why-genzteck">
+      <section className="py-28 bg-[#070711] bg-grid relative z-10" id="why-genzteck">
         <div className="max-w-[1200px] mx-auto px-6">
           <SectionHeader
             label="Why GenzTeck"
@@ -775,7 +783,7 @@ export default function Home({ data }) {
 
 
       {/* ===== TECH STACK ===== */}
-      <section className="py-24 bg-grid overflow-hidden" id="tech-stack">
+      <section className="py-24 bg-[#070711] bg-grid overflow-hidden relative z-10" id="tech-stack">
         <div className="max-w-[1200px] mx-auto px-6">
           <SectionHeader
             label="Technology"
@@ -945,7 +953,7 @@ export default function Home({ data }) {
       </section>
 
       {/* ===== CTA SECTION ===== */}
-      <section className="py-28 relative overflow-hidden" id="cta">
+      <section className="py-28 relative overflow-hidden bg-[#070711] z-10" id="cta">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(0,212,255,0.08)_0%,transparent_70%)]" />
         <div className="absolute inset-0 bg-grid opacity-30" />
         <div className="max-w-[1200px] mx-auto px-6 relative z-10">

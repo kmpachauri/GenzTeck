@@ -37,9 +37,13 @@ export default function BlogPost() {
   }
 
   return (
-    <div style={{ background: 'var(--color-bg)', minHeight: '100vh' }}>
+    <div className="relative min-h-screen overflow-x-hidden bg-[#070711]">
+      {/* Background Gradient */}
+      <div className="absolute inset-0 bg-gradient-to-br from-[#070711] via-[#0D0D1E] to-[#0A0A1A] z-0 pointer-events-none" />
+
+      <BlogBackground />
       {/* Back Nav */}
-      <div className="pt-24 pb-4 border-b border-white/[0.05]">
+      <div className="pt-24 pb-4 border-b border-white/[0.05] relative z-10">
         <div className="max-w-[860px] mx-auto px-6">
           <Link to="/blog" className="inline-flex items-center gap-2 text-[#8A8AA0] hover:text-cyan-400 text-sm transition-colors duration-200">
             <ArrowLeft size={16} /> Back to Blog
@@ -64,8 +68,7 @@ export default function BlogPost() {
       ) : post ? (
         <article>
           {/* Post Hero */}
-          <section className="relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #070711 0%, #0D0D1E 100%)' }}>
-            <BlogBackground />
+          <section className="relative overflow-hidden" style={{ background: 'transparent' }}>
             <div className="max-w-[860px] mx-auto px-6 py-16 relative z-10">
               <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
                 <div className="flex items-center gap-3 flex-wrap mb-6">
@@ -94,7 +97,7 @@ export default function BlogPost() {
           </section>
 
           {/* Post Content */}
-          <section className="py-16">
+          <section className="py-16 bg-[#070711] relative z-10">
             <div className="max-w-[860px] mx-auto px-6">
               <div className="mb-12 h-px bg-white/[0.06]" />
               <div
@@ -118,7 +121,7 @@ export default function BlogPost() {
           </section>
 
           {/* Author Card */}
-          <section className="py-12" style={{ background: 'var(--color-surface)' }}>
+          <section className="py-12 bg-[#070711] relative z-10" style={{ background: '#070711' }}>
             <div className="max-w-[860px] mx-auto px-6">
               <div className="glass rounded-2xl border border-white/[0.08] p-6 flex items-center gap-5">
                 <div className="w-14 h-14 rounded-full bg-gradient-to-br from-cyan-400 to-purple-500 flex items-center justify-center text-white font-bold text-xl font-heading flex-shrink-0">
@@ -133,7 +136,7 @@ export default function BlogPost() {
           </section>
 
           {/* CTA */}
-          <section className="py-20 text-center">
+          <section className="py-20 text-center bg-[#070711] relative z-10">
             <div className="max-w-[860px] mx-auto px-6">
               <h2 className="text-[clamp(1.5rem,2.5vw,2rem)] font-bold font-heading text-white mb-4">
                 Ready to Build Something <span className="text-gradient">Like This?</span>

@@ -1,197 +1,138 @@
-import { useRef, useMemo, Suspense } from 'react';
+import { useRef, useEffect, Suspense } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
-import { OrbitControls, Float, MeshDistortMaterial, Sphere, Box, Torus, Line } from '@react-three/drei';
+import { Float } from '@react-three/drei';
 import * as THREE from 'three';
 
-// ===== FLOATING DASHBOARD PANEL =====
-function DashboardPanel({ position, rotation, color = '#00D4FF', scale = 1 }) {
-  const meshRef = useRef();
+// ===== HOLOGRAPHIC CYBER GLOBE =====
+function HolographicGlobe({ scrollY }) {
+  const groupRef = useRef();
+  const outerSphereRef = useRef();
+  const outerPointsRef = useRef();
+  const innerSphereRef = useRef();
+  const ring1Ref = useRef();
+  const ring2Ref = useRef();
+  const coreRef = useRef();
+
   useFrame((state) => {
-    if (!meshRef.current) return;
-    meshRef.current.position.y = position[1] + Math.sin(state.clock.elapsedTime * 0.5 + position[0]) * 0.15;
-    meshRef.current.rotation.y += 0.002;
-  });
+    const t = state.clock.getElapsedTime();
+    const scrollVal = scrollY.current;
 
-  return (
-    <Float speed={1.5} rotationIntensity={0.3} floatIntensity={0.5}>
-      <mesh ref={meshRef} position={position} rotation={rotation} scale={scale}>
-        <boxGeometry args={[2.4, 1.4, 0.05]} />
-        <meshStandardMaterial
-          color="#12121E"
-          metalness={0.8}
-          roughness={0.2}
-          emissive={color}
-          emissiveIntensity={0.04}
-        />
-      </mesh>
-      {/* Screen glow */}
-      <mesh position={[position[0], position[1], position[2] + 0.03]} scale={scale}>
-        <boxGeometry args={[2.2, 1.2, 0.01]} />
-        <meshStandardMaterial
-          color={color}
-          emissive={color}
-          emissiveIntensity={0.15}
-          transparent
-          opacity={0.6}
-        />
-      </mesh>
-    </Float>
-  );
-}
+    // Mouse Parallax - Tilt the whole assembly dynamically
+    const mouseX = state.mouse.x * 0.35;
+    const mouseY = state.mouse.y * 0.35;
 
-// ===== ORBITING SPHERE =====
-function OrbitingSphere({ radius, speed, size, color, offset = 0 }) {
-  const ref = useRef();
-  useFrame((state) => {
-    if (!ref.current) return;
-    const t = state.clock.elapsedTime * speed + offset;
-    ref.current.position.x = Math.cos(t) * radius;
-    ref.current.position.y = Math.sin(t * 0.7) * (radius * 0.4);
-    ref.current.position.z = Math.sin(t) * radius;
-  });
-
-  return (
-    <mesh ref={ref}>
-      <sphereGeometry args={[size, 16, 16]} />
-      <meshStandardMaterial
-        color={color}
-        emissive={color}
-        emissiveIntensity={0.6}
-        metalness={0.9}
-        roughness={0.1}
-      />
-    </mesh>
-  );
-}
-
-// ===== PARTICLE FIELD =====
-function Particles({ count = 80, color = '#00D4FF' }) {
-  const ref = useRef();
-  const positions = useMemo(() => {
-    const arr = new Float32Array(count * 3);
-    for (let i = 0; i < count; i++) {
-      arr[i * 3] = (Math.random() - 0.5) * 16;
-      arr[i * 3 + 1] = (Math.random() - 0.5) * 10;
-      arr[i * 3 + 2] = (Math.random() - 0.5) * 8;
+    if (groupRef.current) {
+      groupRef.current.rotation.x += (mouseY - groupRef.current.rotation.x) * 0.05;
+      groupRef.current.rotation.y += (mouseX - groupRef.current.rotation.y) * 0.05;
     }
-    return arr;
-  }, [count]);
 
-  useFrame((state) => {
-    if (!ref.current) return;
-    ref.current.rotation.y = state.clock.elapsedTime * 0.02;
+    // Outer globe rotation
+    const outerSpeed = t * 0.065 + scrollVal * 0.0004;
+    if (outerSphereRef.current) outerSphereRef.current.rotation.y = outerSpeed;
+    if (outerPointsRef.current) outerPointsRef.current.rotation.y = outerSpeed;
+
+    // Inner wireframe sphere rotates opposite on Y & X
+    if (innerSphereRef.current) {
+      innerSphereRef.current.rotation.y = -t * 0.12 - scrollVal * 0.0006;
+      innerSphereRef.current.rotation.x = t * 0.08;
+    }
+
+    // Orbiting rings rotation
+    if (ring1Ref.current) {
+      ring1Ref.current.rotation.z = t * 0.15 + scrollVal * 0.0008;
+    }
+    if (ring2Ref.current) {
+      ring2Ref.current.rotation.z = -t * 0.12 - scrollVal * 0.0006;
+    }
+
+    // Central core pulses scale and glows
+    if (coreRef.current) {
+      const pulse = 1.0 + Math.sin(t * 1.8) * 0.06;
+      coreRef.current.scale.set(pulse, pulse, pulse);
+      coreRef.current.rotation.y = -t * 0.25;
+    }
   });
 
   return (
-    <points ref={ref}>
-      <bufferGeometry>
-        <bufferAttribute attach="attributes-position" array={positions} count={count} itemSize={3} />
-      </bufferGeometry>
-      <pointsMaterial color={color} size={0.03} transparent opacity={0.6} sizeAttenuation />
-    </points>
+    <group ref={groupRef} position={[0, -0.2, 0]}>
+      {/* Outer Geodesic Globe Wireframe */}
+      <mesh ref={outerSphereRef}>
+        <icosahedronGeometry args={[2.0, 2]} />
+        <meshBasicMaterial color="#00D4FF" wireframe transparent opacity={0.16} />
+      </mesh>
+
+      {/* Outer Geodesic Globe Nodes */}
+      <points ref={outerPointsRef}>
+        <icosahedronGeometry args={[2.0, 2]} />
+        <pointsMaterial color="#00D4FF" size={0.05} transparent opacity={0.65} sizeAttenuation />
+      </points>
+
+      {/* Inner Geodesic Core Wireframe */}
+      <mesh ref={innerSphereRef}>
+        <dodecahedronGeometry args={[1.2, 1]} />
+        <meshBasicMaterial color="#7B2FBE" wireframe transparent opacity={0.28} />
+      </mesh>
+
+      {/* Outer Glowing Ring 1 (Emerald) */}
+      <mesh ref={ring1Ref} rotation={[Math.PI / 3.5, Math.PI / 6, 0]}>
+        <torusGeometry args={[2.55, 0.012, 8, 64]} />
+        <meshBasicMaterial color="#00FF88" transparent opacity={0.35} />
+      </mesh>
+
+      {/* Outer Glowing Ring 2 (Purple) */}
+      <mesh ref={ring2Ref} rotation={[-Math.PI / 4, -Math.PI / 6, 0]}>
+        <torusGeometry args={[2.85, 0.01, 8, 64]} />
+        <meshBasicMaterial color="#7B2FBE" transparent opacity={0.3} />
+      </mesh>
+
+      {/* Central Pulsating Energy Dodecahedron Core */}
+      <Float speed={2.5} rotationIntensity={0.4} floatIntensity={0.2}>
+        <mesh ref={coreRef}>
+          <dodecahedronGeometry args={[0.55, 0]} />
+          <meshStandardMaterial
+            color="#00D4FF"
+            emissive="#7B2FBE"
+            emissiveIntensity={0.7}
+            roughness={0.15}
+            metalness={0.85}
+            transparent
+            opacity={0.65}
+            wireframe
+          />
+        </mesh>
+      </Float>
+    </group>
   );
 }
 
-// ===== GLOWING TORUS RING =====
-function GlowRing({ position = [0, 0, 0], rotation = [0, 0, 0], color = '#7B2FBE' }) {
-  const ref = useRef();
-  useFrame(() => {
-    if (!ref.current) return;
-    ref.current.rotation.z += 0.005;
-    ref.current.rotation.x += 0.003;
-  });
-
-  return (
-    <mesh ref={ref} position={position} rotation={rotation}>
-      <torusGeometry args={[1.8, 0.02, 16, 100]} />
-      <meshStandardMaterial
-        color={color}
-        emissive={color}
-        emissiveIntensity={0.8}
-        metalness={1}
-        roughness={0}
-      />
-    </mesh>
-  );
-}
-
-// ===== CENTRAL SPHERE (DISTORTED) =====
-function CentralSphere() {
-  const ref = useRef();
-  useFrame((state) => {
-    if (!ref.current) return;
-    ref.current.rotation.y = state.clock.elapsedTime * 0.1;
-  });
-
-  return (
-    <Float speed={2} rotationIntensity={0.2} floatIntensity={0.3}>
-      <Sphere ref={ref} args={[1.2, 64, 64]} position={[0, 0, 0]}>
-        <MeshDistortMaterial
-          color="#00D4FF"
-          emissive="#00D4FF"
-          emissiveIntensity={0.15}
-          metalness={0.9}
-          roughness={0.1}
-          distort={0.3}
-          speed={1.5}
-          transparent
-          opacity={0.15}
-          wireframe
-        />
-      </Sphere>
-    </Float>
-  );
-}
-
-// ===== MOUSE CAMERA CONTROLLER =====
-function CameraController() {
+// ===== CAMERA CONTROLLER (SCROLL DEPTH SHIFT) =====
+function CameraController({ scrollY }) {
   const { camera } = useThree();
-  useFrame((state) => {
-    const mouseX = state.mouse.x * 0.3;
-    const mouseY = state.mouse.y * 0.2;
-    camera.position.x += (mouseX - camera.position.x) * 0.02;
-    camera.position.y += (mouseY - camera.position.y) * 0.02;
-    camera.lookAt(0, 0, 0);
+  useFrame(() => {
+    const scrollVal = scrollY.current;
+    
+    // Zoom out and shift camera slightly downwards on scroll
+    const targetZ = 5.2 + scrollVal * 0.0012;
+    const targetY = -0.2 - scrollVal * 0.0008;
+    
+    camera.position.y += (targetY - camera.position.y) * 0.04;
+    camera.position.z += (targetZ - camera.position.z) * 0.04;
+    camera.lookAt(0, -0.2 - scrollVal * 0.0004, 0);
   });
   return null;
 }
 
 // ===== SCENE CONTENT =====
-function SceneContent({ isMobile }) {
+function SceneContent({ isMobile, scrollY }) {
   return (
     <>
-      <CameraController />
-      <ambientLight intensity={0.3} />
-      <pointLight position={[5, 5, 5]} intensity={1} color="#00D4FF" />
-      <pointLight position={[-5, -3, -5]} intensity={0.6} color="#7B2FBE" />
-      <pointLight position={[0, 8, 0]} intensity={0.4} color="#ffffff" />
+      <CameraController scrollY={scrollY} />
+      <ambientLight intensity={0.5} />
+      <pointLight position={[5, 8, 5]} intensity={1.5} color="#00D4FF" />
+      <pointLight position={[-5, -5, -5]} intensity={0.8} color="#7B2FBE" />
 
-      {/* Central distorted sphere */}
-      <CentralSphere />
-
-      {/* Glowing rings */}
-      <GlowRing position={[0, 0, 0]} rotation={[Math.PI / 4, 0, 0]} color="#00D4FF" />
-      <GlowRing position={[0, 0, 0]} rotation={[0, Math.PI / 4, Math.PI / 6]} color="#7B2FBE" />
-
-      {/* Floating panels - software ecosystem */}
-      {!isMobile && (
-        <>
-          <DashboardPanel position={[-3.5, 1.2, -1]} rotation={[0, 0.3, 0]} color="#00D4FF" scale={0.85} />
-          <DashboardPanel position={[3.2, 0.8, -1.5]} rotation={[0, -0.3, 0]} color="#7B2FBE" scale={0.8} />
-          <DashboardPanel position={[-2.8, -1.8, 0.5]} rotation={[0.1, 0.2, 0]} color="#00FF88" scale={0.7} />
-          <DashboardPanel position={[2.5, -1.5, 0]} rotation={[-0.1, -0.2, 0]} color="#00D4FF" scale={0.75} />
-        </>
-      )}
-
-      {/* Orbiting spheres */}
-      <OrbitingSphere radius={3.5} speed={0.3} size={0.12} color="#00D4FF" offset={0} />
-      <OrbitingSphere radius={3.5} speed={0.3} size={0.08} color="#7B2FBE" offset={Math.PI * 0.66} />
-      <OrbitingSphere radius={3.5} speed={0.3} size={0.1} color="#00FF88" offset={Math.PI * 1.33} />
-      <OrbitingSphere radius={2} speed={0.5} size={0.06} color="#ffffff" offset={Math.PI} />
-      <OrbitingSphere radius={2} speed={0.5} size={0.06} color="#00D4FF" offset={0} />
-
-      {/* Particle field */}
-      <Particles count={isMobile ? 40 : 100} color="#00D4FF" />
+      {/* Holographic Cyber Globe */}
+      <HolographicGlobe scrollY={scrollY} />
     </>
   );
 }
@@ -200,27 +141,35 @@ function SceneContent({ isMobile }) {
 export default function Hero3DScene() {
   const isMobile = window.innerWidth < 768;
   const isLowEnd = navigator.hardwareConcurrency !== undefined && navigator.hardwareConcurrency < 4;
+  
+  const scrollY = useRef(0);
+  useEffect(() => {
+    const handleScroll = () => {
+      scrollY.current = window.scrollY;
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   if (isLowEnd && isMobile) {
-    // Return a simple CSS gradient fallback for very low-end devices
     return (
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-0 right-0 w-96 h-96 rounded-full bg-cyan-400/10 blur-[120px]" />
-        <div className="absolute bottom-0 left-0 w-72 h-72 rounded-full bg-purple-500/10 blur-[100px]" />
+        <div className="absolute top-0 right-0 w-96 h-96 rounded-full bg-cyan-400/5 blur-[120px]" />
+        <div className="absolute bottom-0 left-0 w-72 h-72 rounded-full bg-purple-500/5 blur-[100px]" />
       </div>
     );
   }
 
   return (
-    <div className="absolute inset-0 pointer-events-none" style={{ zIndex: 0 }}>
+    <div className="absolute inset-0 pointer-events-none" style={{ zIndex: 1 }}>
       <Canvas
-        camera={{ position: [0, 0, 7], fov: 50 }}
+        camera={{ position: [0, -0.2, 5.2], fov: 45 }}
         gl={{ antialias: !isMobile, alpha: true, powerPreference: 'high-performance' }}
-        dpr={isMobile ? [1, 1.5] : [1, 2]}
-        performance={{ min: 0.5 }}
+        dpr={isMobile ? [1, 1.2] : [1, 1.5]}
+        performance={{ min: 0.6 }}
       >
         <Suspense fallback={null}>
-          <SceneContent isMobile={isMobile} />
+          <SceneContent isMobile={isMobile} scrollY={scrollY} />
         </Suspense>
       </Canvas>
     </div>

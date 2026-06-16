@@ -81,13 +81,13 @@ export default function DemoVideos({ videos }) {
   const data = videos?.length > 0 ? videos : defaultVideos;
 
   return (
-    <div style={{ background: 'var(--color-bg)', minHeight: '100vh' }}>
+    <div style={{ background: 'linear-gradient(135deg, #070711 0%, #0D0717 100%)', minHeight: '100vh', position: 'relative' }}>
       {/* Hero */}
+      <Suspense fallback={null}>
+        <DemoVideosBackground />
+      </Suspense>
       <section className="relative pt-32 pb-24 text-center overflow-hidden"
-        style={{ background: 'linear-gradient(135deg, #070711 0%, #0D0717 100%)' }}>
-        <Suspense fallback={null}>
-          <DemoVideosBackground />
-        </Suspense>
+        style={{ background: 'transparent' }}>
         <div className="max-w-[1200px] mx-auto px-6 relative z-10">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}
             className="inline-flex items-center gap-2 text-purple-400 text-xs font-semibold tracking-[3px] uppercase mb-5">
@@ -125,10 +125,7 @@ export default function DemoVideos({ videos }) {
       <section className="pb-20">
         <div className="max-w-[1200px] mx-auto px-6">
           <ScrollReveal>
-            <div className="relative overflow-hidden rounded-3xl border border-white/[0.08] bg-[#080814] p-8 md:p-10">
-              <Suspense fallback={null}>
-                <DemoVideosBackground />
-              </Suspense>
+            <div className="relative overflow-hidden rounded-3xl border border-white/[0.08] bg-transparent p-8 md:p-10">
               <motion.div
                 className="absolute -right-16 -top-20 w-72 h-72 rounded-full border border-cyan-400/20"
                 animate={{ rotate: 360 }}

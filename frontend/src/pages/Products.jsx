@@ -365,8 +365,14 @@ export default function Products({ products }) {
   };
 
   return (
-    <div style={{ background: 'var(--color-bg)', minHeight: '100vh' }} className="relative overflow-hidden">
+    <div className="relative min-h-screen overflow-x-hidden bg-[#070711]">
+      {/* Background Gradient */}
+      <div className="absolute inset-0 bg-gradient-to-br from-[#070711] via-[#0D0D1E] to-[#0A0A1A] z-0 pointer-events-none" />
       
+      <Suspense fallback={null}>
+        <ProductsBackground />
+      </Suspense>
+
       {/* Soft Grid Pattern */}
       <div className="absolute inset-0 bg-grid opacity-[0.02] pointer-events-none z-0" />
 
@@ -376,11 +382,8 @@ export default function Products({ products }) {
       <div className="absolute top-[75%] left-[-15%] w-[600px] h-[600px] rounded-full bg-emerald-500/5 blur-[130px] pointer-events-none z-0 animate-float-slow" />
 
       {/* Hero */}
-      <section className="relative pt-32 pb-24 text-center overflow-hidden"
-        style={{ background: 'linear-gradient(135deg, #070711 0%, #0D0D1E 100%)' }}>
-        <Suspense fallback={null}>
-          <ProductsBackground />
-        </Suspense>
+      <section className="relative pt-32 pb-24 text-center overflow-hidden z-10"
+        style={{ background: 'transparent' }}>
         <div className="max-w-[1200px] mx-auto px-6 relative z-10">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}
             className="inline-flex items-center gap-2 text-cyan-400 text-xs font-semibold tracking-[3px] uppercase mb-5">
@@ -412,18 +415,26 @@ export default function Products({ products }) {
             </Link>
           </motion.div>
         </div>
+
+        {/* Cyber Divider & Bottom Fade */}
+        <div className="absolute bottom-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-cyan-500/35 to-transparent z-20">
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-[3px] bg-gradient-to-r from-cyan-400 to-purple-500 rounded-full blur-[1px]" />
+        </div>
+        <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-[#070711] to-transparent pointer-events-none z-10" />
       </section>
 
       {/* Products list - each rendered as an alternating premium card layout */}
-      <div className="max-w-[1200px] mx-auto px-6 relative z-10">
-        {data.map((product, i) => (
-          <ProductCard
-            key={product._id || i}
-            product={product}
-            isEven={i % 2 === 0}
-            handleRequestDemo={handleRequestDemo}
-          />
-        ))}
+      <div className="relative z-20 bg-[#070711] py-12">
+        <div className="max-w-[1200px] mx-auto px-6">
+          {data.map((product, i) => (
+            <ProductCard
+              key={product._id || i}
+              product={product}
+              isEven={i % 2 === 0}
+              handleRequestDemo={handleRequestDemo}
+            />
+          ))}
+        </div>
       </div>
 
       {/* Request Demo Modal Popup */}
@@ -535,7 +546,7 @@ export default function Products({ products }) {
       </AnimatePresence>
 
       {/* CTA */}
-      <section className="py-24 text-center relative z-10" style={{ background: 'var(--color-surface)' }}>
+      <section className="py-24 text-center relative z-10" style={{ background: '#070711' }}>
         <div className="max-w-[1200px] mx-auto px-6">
           <ScrollReveal>
             <h2 className="text-[clamp(1.8rem,3vw,2.5rem)] font-bold font-heading mb-4 text-white">

@@ -24,13 +24,17 @@ export default function Services({ services }) {
   const data = services?.length > 0 ? services : defaultServices;
 
   return (
-    <div style={{ background: 'var(--color-bg)', minHeight: '100vh' }}>
+    <div className="relative min-h-screen overflow-x-hidden bg-[#070711]">
+      {/* Background Gradient */}
+      <div className="absolute inset-0 bg-gradient-to-br from-[#070711] via-[#0D0D1E] to-[#0A0A1A] z-0 pointer-events-none" />
+
+      <Suspense fallback={null}>
+        <BlueprintBackground />
+      </Suspense>
+
       {/* Hero */}
-      <section className="relative pt-32 pb-24 text-center overflow-hidden"
-        style={{ background: 'linear-gradient(135deg, #070711 0%, #0D0D1E 100%)' }}>
-        <Suspense fallback={null}>
-          <BlueprintBackground />
-        </Suspense>
+      <section className="relative pt-32 pb-24 text-center overflow-hidden z-10"
+        style={{ background: 'transparent' }}>
         <div className="max-w-[1200px] mx-auto px-6 relative z-10">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}
             className="inline-flex items-center gap-2 text-cyan-400 text-xs font-semibold tracking-[3px] uppercase mb-5">
@@ -49,10 +53,16 @@ export default function Services({ services }) {
             <Badge variant="amber">Fast Delivery</Badge>
           </motion.div>
         </div>
+
+        {/* Cyber Divider & Bottom Fade */}
+        <div className="absolute bottom-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-cyan-500/35 to-transparent z-20">
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-[3px] bg-gradient-to-r from-cyan-400 to-purple-500 rounded-full blur-[1px]" />
+        </div>
+        <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-[#070711] to-transparent pointer-events-none z-10" />
       </section>
 
       {/* Services Grid */}
-      <section className="py-28">
+      <section className="py-28 bg-[#070711] relative z-20">
         <div className="max-w-[1200px] mx-auto px-6">
           <StaggerReveal
             className="grid grid-cols-1 md:grid-cols-2 gap-6"
@@ -119,14 +129,11 @@ export default function Services({ services }) {
       </section>
 
       {/* CTA */}
-      <section className="py-24 relative overflow-hidden"
+      <section className="py-24 relative overflow-hidden bg-[#070711] z-10"
         style={{ background: 'var(--color-surface)' }}>
         <div className="max-w-[1200px] mx-auto px-6">
           <ScrollReveal>
-            <div className="relative overflow-hidden rounded-3xl border border-white/[0.08] bg-[#080814] p-8 md:p-10 text-center">
-              <Suspense fallback={null}>
-                <BlueprintBackground />
-              </Suspense>
+            <div className="relative overflow-hidden rounded-3xl border border-white/[0.08] bg-transparent p-8 md:p-10 text-center">
               <motion.div
                 className="absolute -right-14 -top-16 h-44 w-44 rounded-full border border-cyan-400/20"
                 animate={{ rotate: 360 }}

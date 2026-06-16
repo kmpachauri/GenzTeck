@@ -74,13 +74,13 @@ export default function Testimonials({ testimonials }) {
   const avgRating = (data.reduce((s, t) => s + (t.rating || 5), 0) / data.length).toFixed(1);
 
   return (
-    <div style={{ background: 'var(--color-bg)', minHeight: '100vh' }}>
+    <div style={{ background: 'linear-gradient(135deg, #070711 0%, #0D0D1A 100%)', minHeight: '100vh', position: 'relative' }}>
+      <Suspense fallback={null}>
+        <TestimonialsBackground />
+      </Suspense>
       {/* Hero */}
       <section className="relative pt-32 pb-24 text-center overflow-hidden"
-        style={{ background: 'linear-gradient(135deg, #070711 0%, #0D0D1A 100%)' }}>
-        <Suspense fallback={null}>
-          <TestimonialsBackground />
-        </Suspense>
+        style={{ background: 'transparent' }}>
         <div className="max-w-[1200px] mx-auto px-6 relative z-10">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}
             className="inline-flex items-center gap-2 text-amber-400 text-xs font-semibold tracking-[3px] uppercase mb-5">

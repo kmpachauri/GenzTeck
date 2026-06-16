@@ -30,13 +30,18 @@ export default function Demos() {
   };
 
   return (
-    <div style={{ background: 'var(--color-bg)', minHeight: '100vh' }}>
+    <div className="relative min-h-screen overflow-x-hidden bg-[#070711]">
+      {/* Background Gradient */}
+      <div className="absolute inset-0 bg-gradient-to-br from-[#070711] via-[#0D0D1E] to-[#0A0A1A] z-0 pointer-events-none" />
+
       {/* Hero Header Section */}
-      <section className="relative pt-32 pb-24 text-center overflow-hidden"
-        style={{ background: 'linear-gradient(135deg, #070711 0%, #08121A 100%)' }}>
-        <Suspense fallback={null}>
-          <DemosBackground />
-        </Suspense>
+      <Suspense fallback={null}>
+        <DemosBackground />
+      </Suspense>
+
+      {/* Hero */}
+      <section className="relative pt-32 pb-24 text-center overflow-hidden z-10"
+        style={{ background: 'transparent' }}>
         <div className="max-w-[1200px] mx-auto px-4 sm:px-6 md:px-8 lg:px-12 relative z-10">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}
             className="inline-flex items-center gap-2 text-cyan-400 text-xs font-semibold tracking-[3px] uppercase mb-5">
@@ -47,14 +52,20 @@ export default function Demos() {
             Explore Our Live <span className="text-gradient">Website Demos</span>
           </motion.h1>
           <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.2 }}
-            className="text-[#8A8AA0] text-xl max-w-2xl mx-auto leading-relaxed">
+            className="text-[#8A8AA0] text-xl max-w-2xl mx-auto leading-relaxed font-light">
             Test and customize premium web templates built for high conversion. Enter your brand name in any card below to see it live instantly!
           </motion.p>
         </div>
+
+        {/* Cyber Divider & Bottom Fade */}
+        <div className="absolute bottom-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-cyan-500/35 to-transparent z-20">
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-[3px] bg-gradient-to-r from-cyan-400 to-purple-500 rounded-full blur-[1px]" />
+        </div>
+        <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-[#070711] to-transparent pointer-events-none z-10" />
       </section>
 
       {/* Demo Cards Grid Section */}
-      <section className="py-24 relative z-10 bg-slate-950/20">
+      <section className="py-24 relative z-20 bg-[#070711]">
         <div className="max-w-[1200px] mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
           <SectionHeader
             label="Live Demonstrations"
@@ -99,7 +110,7 @@ export default function Demos() {
       </section>
 
       {/* Early Access / Personalized Request Form */}
-      <section className="py-28 bg-grid relative z-10 border-t border-white/[0.04]" id="request-demo">
+      <section className="py-28 bg-[#070711] bg-grid relative z-10 border-t border-white/[0.04]" id="request-demo">
         <div className="max-w-[700px] mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
           <SectionHeader
             label="Custom Specifications"
@@ -171,13 +182,10 @@ export default function Demos() {
         </div>
       </section>
 
-      <section className="pb-24 relative z-10">
+      <section className="pb-24 relative z-10 bg-[#070711]">
         <div className="max-w-[1200px] mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
           <ScrollReveal>
-            <div className="relative overflow-hidden rounded-3xl border border-white/[0.08] bg-[#080814] p-8 md:p-10">
-              <Suspense fallback={null}>
-                <DemosBackground />
-              </Suspense>
+            <div className="relative overflow-hidden rounded-3xl border border-white/[0.08] bg-transparent p-8 md:p-10">
               <motion.div
                 className="absolute -right-14 -top-16 h-44 w-44 rounded-full border border-cyan-400/20"
                 animate={{ rotate: 360 }}

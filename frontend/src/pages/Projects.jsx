@@ -63,13 +63,17 @@ export default function Projects({ projects }) {
   });
 
   return (
-    <div style={{ background: 'var(--color-bg)', minHeight: '100vh' }} className="overflow-x-hidden">
+    <div className="relative min-h-screen overflow-x-hidden bg-[#070711]">
+      {/* Background Gradient */}
+      <div className="absolute inset-0 bg-gradient-to-br from-[#070711] via-[#0D1A14] to-[#0A0A1A] z-0 pointer-events-none" />
+
+      <Suspense fallback={null}>
+        <ProjectsBackground />
+      </Suspense>
+
       {/* Hero */}
-      <section className="relative pt-32 pb-24 text-center overflow-hidden"
-        style={{ background: 'linear-gradient(135deg, #070711 0%, #0D1A14 100%)' }}>
-        <Suspense fallback={null}>
-          <ProjectsBackground />
-        </Suspense>
+      <section className="relative pt-32 pb-24 text-center overflow-hidden z-10"
+        style={{ background: 'transparent' }}>
         <div className="max-w-[1200px] mx-auto px-4 sm:px-6 md:px-8 lg:px-12 relative z-10">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}
             className="inline-flex items-center gap-2 text-cyan-400 text-xs font-semibold tracking-[3px] uppercase mb-5">
@@ -84,10 +88,17 @@ export default function Projects({ projects }) {
             From mobile apps and e-commerce platforms to custom dashboards — see our client-ready software products.
           </motion.p>
         </div>
+
+        {/* Cyber Divider & Bottom Fade */}
+        <div className="absolute bottom-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-cyan-500/35 to-transparent z-20">
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-[3px] bg-gradient-to-r from-cyan-400 to-purple-500 rounded-full blur-[1px]" />
+        </div>
+        <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-[#070711] to-transparent pointer-events-none z-10" />
       </section>
 
       {/* Case Studies */}
-      <div className="max-w-[1200px] mx-auto px-4 sm:px-6 md:px-8 lg:px-12 py-16">
+      <div className="relative z-20 bg-[#070711] py-16">
+        <div className="max-w-[1200px] mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
         
         {/* Category Filters */}
         <div className="flex justify-center gap-3 mb-16 flex-wrap relative z-20">
@@ -226,14 +237,12 @@ export default function Projects({ projects }) {
           })}
         </div>
       </div>
+    </div>
 
-      <section className="pb-20">
+      <section className="pb-20 bg-[#070711] relative z-10">
         <div className="max-w-[1200px] mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
           <ScrollReveal>
-            <div className="relative overflow-hidden rounded-3xl border border-white/[0.08] bg-[#080814] p-8 md:p-10">
-              <Suspense fallback={null}>
-                <ProjectsBackground />
-              </Suspense>
+            <div className="relative overflow-hidden rounded-3xl border border-white/[0.08] bg-transparent p-8 md:p-10">
               <motion.div
                 className="absolute -right-12 -top-16 h-40 w-40 rounded-full border border-cyan-400/20"
                 animate={{ rotate: 360 }}
@@ -277,7 +286,7 @@ export default function Projects({ projects }) {
       </section>
 
       {/* CTA */}
-      <section className="py-24 text-center border-t border-white/[0.04]" style={{ background: 'var(--color-surface)' }}>
+      <section className="py-24 text-center border-t border-white/[0.04]" style={{ background: '#070711', relative: 'relative', zIndex: 10 }}>
         <div className="max-w-[1200px] mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
           <ScrollReveal>
             <h2 className="text-[clamp(1.8rem,3vw,2.5rem)] font-bold font-heading mb-4 text-white uppercase">
