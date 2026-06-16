@@ -1,6 +1,6 @@
-import { Link } from 'react-router-dom';
-import { ArrowRight, CheckCircle, Star, Zap, Shield, Users, Code, Smartphone, Globe, BarChart3, ChevronDown, Play, Sparkles, ExternalLink } from 'lucide-react';
-import { useState, lazy, Suspense } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { ArrowRight, Star, Zap, Shield, Users, Code, Smartphone, Globe, BarChart3, ChevronDown, Play, Sparkles, ExternalLink, X, ChevronLeft, ChevronRight, Quote } from 'lucide-react';
+import { useState, useEffect, lazy, Suspense } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { GlassCard, TiltCard } from '../components/ui/Cards';
 import { ScrollReveal, StaggerReveal, StaggerItem, SectionHeader, CountUpStat } from '../components/ui/Motion';
@@ -22,16 +22,85 @@ const defaultServices = [
 ];
 
 const defaultProducts = [
-  { _id: '1', name: 'QR & NFC Digital Menu', shortDescription: 'Complete restaurant digitalization — smart menus to kitchen management system.', status: 'live', icon: '🍽️', color: '#00D4FF' },
-  { _id: '2', name: 'GeoTrace', shortDescription: 'Real-time GPS fleet tracking with geofencing, alerts, and driver management.', status: 'live', icon: '🗺️', color: '#7B2FBE' },
-  { _id: '3', name: 'NFC Smart Standee', shortDescription: 'One tap to connect customers to Instagram, Google Reviews, WhatsApp, and more.', status: 'live', icon: '📲', color: '#00FF88' },
-  { _id: '4', name: 'OneTap', shortDescription: 'Smart landing pages with 30+ premium themes. One link for everything you need.', status: 'live', icon: '⚡', color: '#FF6B6B' },
+  { _id: '1', name: 'QR & NFC Digital Menu', shortDescription: 'Complete restaurant digitalization — smart menus to kitchen management system.', status: 'live', icon: '🍽️', color: '#00D4FF', image: '/images/qr_menu_mockup.png' },
+  { _id: '2', name: 'GeoTrace', shortDescription: 'Real-time GPS fleet tracking with geofencing, alerts, and driver management.', status: 'live', icon: '🗺️', color: '#7B2FBE', image: '/images/geotrace_mockup.png' },
+  { _id: '3', name: 'NFC Smart Standee', shortDescription: 'One tap to connect customers to Instagram, Google Reviews, WhatsApp, and more.', status: 'live', icon: '📲', color: '#00FF88', image: '/images/nfc_standee_mockup.png' },
+  { _id: '4', name: 'OneTap', shortDescription: 'Smart landing pages with 30+ premium themes. One link for everything you need.', status: 'live', icon: '⚡', color: '#FF6B6B', image: '/images/onetap_mockup.png' },
+];
+
+const websiteDemos = [
+  {
+    slug: 'restaurant',
+    title: 'Restaurant Demo',
+    category: 'RESTAURANTS',
+    defaultBrand: 'Spice Garden',
+    description: 'Culinary website featuring menu showcases, table reservations, and WhatsApp orders.',
+    features: ['Interactive menu cards', 'Table reservation system', 'WhatsApp ordering'],
+    image: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=800&q=80',
+    colorTheme: 'amber',
+    glowColor: 'amber'
+  },
+  {
+    slug: 'gym',
+    title: 'Gym Demo',
+    category: 'FITNESS',
+    defaultBrand: 'Iron Temple Gym',
+    description: 'Premium fitness website with membership tiers and BMI calculator.',
+    features: ['Bold performance hero', 'Membership plan tiers', 'Interactive BMI calculator'],
+    image: 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=800&q=80',
+    colorTheme: 'emerald',
+    glowColor: 'green'
+  },
+  {
+    slug: 'real-estate',
+    title: 'Real Estate Demo',
+    category: 'REAL ESTATE',
+    defaultBrand: 'Luxe Living',
+    description: 'Modern real estate listings with search filter tools and contact forms.',
+    features: ['Property listings grid', 'Advanced search filters', 'Consultation inquiry form'],
+    image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80',
+    colorTheme: 'cyan',
+    glowColor: 'cyan'
+  },
+  {
+    slug: 'school',
+    title: 'Education Demo',
+    category: 'EDUCATION',
+    defaultBrand: 'Apex Academy',
+    description: 'Institute portal highlighting results tracker, course lists, and admissions.',
+    features: ['Detailed course catalog', 'Interactive results tracker', 'Admissions Registration CTA'],
+    image: 'https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?auto=format&fit=crop&w=800&q=80',
+    colorTheme: 'blue',
+    glowColor: 'cyan'
+  },
+  {
+    slug: 'salon',
+    title: 'Salon Demo',
+    category: 'SALON',
+    defaultBrand: 'Aura Spa',
+    description: 'Spa and wellness landing page with pricing, stylized grids, and booking.',
+    features: ['Treatment Pricing Grid', 'Before/After Transformation', 'Appointment Scheduler Form'],
+    image: 'https://images.unsplash.com/photo-1560066984-138dadb4c035?auto=format&fit=crop&w=800&q=80',
+    colorTheme: 'purple',
+    glowColor: 'purple'
+  },
+  {
+    slug: 'digital-marketing',
+    title: 'Portfolio Demo',
+    category: 'PORTFOLIO',
+    defaultBrand: 'Sync Creative',
+    description: 'Agency portfolio showcase with case studies, ROI metrics, and timelines.',
+    features: ['Case Studies with ROI Metrics', 'Interactive Service Timelines', 'Growth Process Roadmaps'],
+    image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80',
+    colorTheme: 'purple',
+    glowColor: 'purple'
+  }
 ];
 
 const defaultProjects = [
-  { _id: '1', title: 'Prakrit Astro', type: 'Astrology Platform', url: 'https://prakritastro.com', problem: 'Needed a premium digital presence for astrological consultations and services.' },
-  { _id: '2', title: 'Nidhi Decor', type: 'Interior & E-Commerce', url: 'https://axora.homes', problem: 'Needed an elegant e-commerce layout for decoration and interior design products to showcase options and capture buyer inquiries.' },
-  { _id: '3', title: 'RLP Digital Mobile App', type: 'Mobile App', url: null, problem: 'Local political party needed a secure mobile app hub to train members, share updates, and generate customized campaign posters.' },
+  { _id: '1', title: 'Prakrit Astro', type: 'Astrology Platform', url: 'https://prakritastro.com', image: '/images/projects_mockup.png', problem: 'Needed a premium digital presence for astrological consultations and services.' },
+  { _id: '2', title: 'Nidhi Decor', type: 'Interior & E-Commerce', url: 'https://axora.homes', image: 'https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=800&q=80', problem: 'Needed an elegant e-commerce layout for decoration and interior design products to showcase options and capture buyer inquiries.' },
+  { _id: '3', title: 'RLP Digital Mobile App', type: 'Mobile App', url: null, image: 'https://images.unsplash.com/photo-1555774698-0b77e0d5fac6?auto=format&fit=crop&w=800&q=80', problem: 'Local political party needed a secure mobile app hub to train members, share updates, and generate customized campaign posters.' },
 ];
 
 const defaultTestimonials = [
@@ -118,6 +187,51 @@ export default function Home({ data }) {
   const projects = data?.projects?.length ? data.projects.slice(0, 3) : defaultProjects;
   const testimonials = data?.testimonials?.length ? data.testimonials : defaultTestimonials;
   const [openFaq, setOpenFaq] = useState(null);
+  const navigate = useNavigate();
+  const [activeIdx, setActiveIdx] = useState(1); // Default active (Gym Demo)
+  const [selectedDemo, setSelectedDemo] = useState(null);
+  const [brandNameInput, setBrandNameInput] = useState('');
+  const [isHovered, setIsHovered] = useState(false);
+  const [windowWidth, setWindowWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : 1200);
+
+  useEffect(() => {
+    const handleResize = () => setWindowWidth(window.innerWidth);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  const nextSlide = () => {
+    setActiveIdx((prev) => (prev + 1) % websiteDemos.length);
+  };
+
+  const prevSlide = () => {
+    setActiveIdx((prev) => (prev - 1 + websiteDemos.length) % websiteDemos.length);
+  };
+
+  const handleOpenPreview = (demo) => {
+    setSelectedDemo(demo);
+    setBrandNameInput('');
+  };
+
+  const handleLaunchPreview = (e) => {
+    e.preventDefault();
+    if (!selectedDemo) return;
+    const finalBrand = brandNameInput.trim() || selectedDemo.defaultBrand;
+    setSelectedDemo(null);
+    navigate(`/demos/${selectedDemo.slug}?brand=${encodeURIComponent(finalBrand)}`);
+  };
+
+  const handleViewDemoDirectly = (demo) => {
+    navigate(`/demos/${demo.slug}?brand=${encodeURIComponent(demo.defaultBrand)}`);
+  };
+
+  useEffect(() => {
+    if (isHovered) return;
+    const interval = setInterval(() => {
+      setActiveIdx((prev) => (prev + 1) % websiteDemos.length);
+    }, 5000);
+    return () => clearInterval(interval);
+  }, [isHovered]);
 
   return (
     <div style={{ background: 'var(--color-bg)' }}>
@@ -197,6 +311,13 @@ export default function Home({ data }) {
               >
                 See Our Work
               </Link>
+              <Link
+                to="/demos"
+                className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full font-semibold border border-purple-400/50 bg-purple-500/5 text-purple-300 hover:bg-purple-500/20 hover:border-purple-400 hover:text-white shadow-[0_4px_0_0_rgba(168,85,247,0.3),0_0_15px_rgba(168,85,247,0.15)] transition-all duration-200"
+                id="hero-cta-demos"
+              >
+                Browse Demos
+              </Link>
             </motion.div>
 
             {/* Stats */}
@@ -271,6 +392,210 @@ export default function Home({ data }) {
         </div>
       </section>
 
+      {/* ===== WEBSITE DEMOS CAROUSEL ===== */}
+      <section className="py-28 relative bg-[#070711]" id="website-demos">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(123,47,190,0.05)_0%,transparent_70%)] pointer-events-none" />
+        <div className="max-w-[1200px] mx-auto px-6 relative z-10">
+          <div className="text-center mb-12">
+            <SectionHeader
+              label="Live Templates"
+              title={<>Website <span className="text-gradient">Demos</span></>}
+              subtitle="Pick an industry template, preview with your brand name, and see how your site could look before you commit."
+            />
+          </div>
+
+          {/* Responsive 3D Carousel View - Enabled across all screen sizes */}
+          <div className="flex relative justify-center items-center h-[580px] md:h-[620px] w-full overflow-hidden select-none">
+            {/* Left & Right arrow controls */}
+            <button
+              onClick={prevSlide}
+              className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 w-10 h-10 sm:w-12 sm:h-12 rounded-full glass border border-white/10 flex items-center justify-center text-white hover:bg-white/5 hover:border-white/20 transition-all shadow-[0_4px_15px_rgba(0,0,0,0.5)] z-[45] cursor-pointer"
+              aria-label="Previous demo"
+            >
+              <ChevronLeft size={20} className="sm:hidden" />
+              <ChevronLeft size={24} className="hidden sm:block" />
+            </button>
+            <button
+              onClick={nextSlide}
+              className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 w-10 h-10 sm:w-12 sm:h-12 rounded-full glass border border-white/10 flex items-center justify-center text-white hover:bg-white/5 hover:border-white/20 transition-all shadow-[0_4px_15px_rgba(0,0,0,0.5)] z-[45] cursor-pointer"
+              aria-label="Next demo"
+            >
+              <ChevronRight size={20} className="sm:hidden" />
+              <ChevronRight size={24} className="hidden sm:block" />
+            </button>
+
+            <div
+              className="relative w-[1200px] h-full flex justify-center items-center"
+              onMouseEnter={() => setIsHovered(true)}
+              onMouseLeave={() => setIsHovered(false)}
+            >
+              {websiteDemos.map((demo, idx) => {
+                let offset = idx - activeIdx;
+                if (offset < -3) offset += websiteDemos.length;
+                if (offset > 2) offset -= websiteDemos.length;
+
+                const isActive = offset === 0;
+                const isVisible = Math.abs(offset) <= 1;
+                
+                // Calculate responsive offset multiplier
+                const offsetMultiplier = windowWidth < 640 ? 300 : (windowWidth < 768 ? 345 : 395);
+
+                return (
+                  <motion.div
+                    key={demo.slug}
+                    className="absolute w-[280px] sm:w-[320px] md:w-[360px] pointer-events-auto cursor-pointer"
+                    onClick={() => {
+                      if (!isActive) {
+                        setActiveIdx(idx);
+                      }
+                    }}
+                    style={{
+                      transformStyle: 'preserve-3d',
+                      perspective: 1000,
+                    }}
+                    // Swipe gesture support on touchscreens
+                    drag="x"
+                    dragConstraints={{ left: 0, right: 0 }}
+                    onDragEnd={(e, info) => {
+                      if (info.offset.x > 60) {
+                        prevSlide();
+                      } else if (info.offset.x < -60) {
+                        nextSlide();
+                      }
+                    }}
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{
+                      x: offset * offsetMultiplier,
+                      scale: isActive ? 1.05 : 0.9,
+                      opacity: isActive ? 1 : (isVisible ? 0.35 : 0),
+                      zIndex: isActive ? 30 : (isVisible ? 20 : 10),
+                      rotateY: offset * -15,
+                    }}
+                    transition={{
+                      type: 'spring',
+                      stiffness: 220,
+                      damping: 24,
+                    }}
+                  >
+                    <div className={`relative rounded-3xl overflow-hidden border transition-all duration-500 flex flex-col h-[480px] sm:h-[500px] md:h-[520px] ${
+                      isActive
+                        ? 'border-purple-500/40 shadow-[0_25px_50px_-12px_rgba(168,85,247,0.35)] bg-[#0c0c1e]'
+                        : 'border-white/[0.05] shadow-[0_4px_30px_rgba(0,0,0,0.4)] bg-[#0c0c1e]/80 hover:border-white/20'
+                    }`}>
+                      {/* Image container */}
+                      <div className="relative h-36 sm:h-40 md:h-44 w-full overflow-hidden flex-shrink-0">
+                        <div className="absolute top-4 left-4 z-10">
+                          <span className="bg-[#FF003C] text-white text-[9px] font-bold px-2.5 py-1 rounded-md uppercase tracking-wider shadow-md">
+                            Featured
+                          </span>
+                        </div>
+                        <img src={demo.image} alt={demo.title} className="w-full h-full object-cover" />
+                        <div className="absolute inset-0 bg-gradient-to-t from-[#0c0c1e] via-[#0c0c1e]/20 to-transparent" />
+                      </div>
+
+                      {/* Content */}
+                      <div className="p-5 sm:p-6 flex flex-col flex-grow justify-between">
+                        <div className={isActive ? "" : "pointer-events-none"}>
+                          <span className="text-[#FF4A60] font-semibold text-[10px] tracking-widest uppercase mb-1 block">
+                            {demo.category}
+                          </span>
+                          <h3 className="font-heading font-bold text-white text-base sm:text-lg mb-1.5 sm:mb-2">
+                            {demo.title}
+                          </h3>
+                          <p className="text-[#8A8AA0] text-xs leading-relaxed mb-3 sm:mb-4 line-clamp-2 font-light">
+                            {demo.description}
+                          </p>
+                          
+                          {/* Feature tags */}
+                          <div className="flex flex-wrap gap-1.5 sm:gap-2 mb-3 sm:mb-4">
+                            {demo.features.map((feat, fidx) => (
+                              <span key={fidx} className="px-2.5 py-1 rounded-md border border-white/[0.06] bg-white/[0.02] text-[#8A8AA0] text-[10px] font-light truncate max-w-[110px] sm:max-w-[150px]">
+                                {feat}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+
+                        {/* Buttons */}
+                        <div className={`flex flex-col gap-2 mt-auto ${isActive ? "" : "pointer-events-none"}`}>
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleOpenPreview(demo);
+                            }}
+                            className="w-full py-2.5 rounded-xl font-bold bg-[#8b5cf6] hover:bg-[#7c3aed] text-white shadow-glow-purple text-xs uppercase tracking-wider transition-all duration-200 cursor-pointer"
+                          >
+                            Open Preview
+                          </button>
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleViewDemoDirectly(demo);
+                            }}
+                            className="w-full py-2.5 rounded-xl font-bold border border-white/10 text-white hover:bg-white/5 bg-slate-900/40 text-xs uppercase tracking-wider transition-all duration-200 flex items-center justify-center gap-1.5 cursor-pointer"
+                          >
+                            View Demo <ExternalLink size={12} />
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </motion.div>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Pagination & Controls - Enabled on all screen sizes */}
+          <div className="flex flex-col items-center justify-center mt-6">
+            <div className="flex items-center gap-6">
+              <button
+                onClick={prevSlide}
+                className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center text-white hover:bg-white/5 hover:border-white/20 transition-all cursor-pointer"
+                aria-label="Previous demo"
+              >
+                <ChevronLeft size={20} />
+              </button>
+
+              {/* Dots */}
+              <div className="flex items-center gap-2">
+                {websiteDemos.map((_, idx) => (
+                  <button
+                    key={idx}
+                    onClick={() => setActiveIdx(idx)}
+                    className={`h-2 rounded-full transition-all duration-300 cursor-pointer ${
+                      idx === activeIdx ? 'w-8 bg-[#8b5cf6]' : 'w-2 bg-white/20 hover:bg-white/40'
+                    }`}
+                    aria-label={`Go to slide ${idx + 1}`}
+                  />
+                ))}
+              </div>
+
+              <button
+                onClick={nextSlide}
+                className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center text-white hover:bg-white/5 hover:border-white/20 transition-all cursor-pointer"
+                aria-label="Next demo"
+              >
+                <ChevronRight size={20} />
+              </button>
+            </div>
+
+            {/* Auto advance info */}
+            <div className="text-center mt-6 mb-4">
+              <p className="text-[#5A5A7A] text-xs">
+                Auto-advances every few seconds
+              </p>
+            </div>
+          </div>
+
+          {/* Explore All Demos Button - Visible on all viewports */}
+          <div className="flex justify-center mt-8 md:mt-4">
+            <Link to="/demos" className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full font-semibold border border-purple-500/30 text-purple-400 hover:bg-purple-500/10 hover:border-purple-500 transition-all duration-200" id="view-all-demos-btn">
+              Explore All Demos <ArrowRight size={16} />
+            </Link>
+          </div>
+        </div>
+      </section>
+
       {/* ===== PRODUCTS PREVIEW ===== */}
       <section className="py-28 relative" id="products-preview">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(123,47,190,0.06)_0%,transparent_70%)]" />
@@ -284,25 +609,50 @@ export default function Home({ data }) {
             {products.map((product) => (
               <StaggerItem key={product._id}>
                 <TiltCard className="h-full group">
-                  <div className="h-full glass rounded-2xl border border-white/[0.08] p-8 hover:border-cyan-400/25 transition-all duration-300 relative overflow-hidden">
-                    <div className="flex items-start justify-between mb-5">
-                      <div className="text-3xl">{product.icon || '📦'}</div>
-                      <Badge variant={product.status === 'live' ? 'live' : 'coming-soon'}>
-                        {product.status === 'live' ? '● Live' : '⏳ Coming Soon'}
-                      </Badge>
+                  <div className="h-full glass rounded-3xl border border-white/[0.08] hover:border-cyan-400/30 hover:shadow-[0_15px_40px_rgba(6,182,212,0.15)] transition-all duration-500 overflow-hidden flex flex-col md:flex-row relative">
+                    {/* Visual image mockup banner */}
+                    <div className="md:w-[42%] h-48 md:h-auto relative overflow-hidden bg-slate-950 flex-shrink-0">
+                      <img
+                        src={product.image || '/images/projects_mockup.png'}
+                        alt={product.name}
+                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                        onError={(e) => {
+                          e.currentTarget.onerror = null;
+                          e.currentTarget.src = '/images/projects_mockup.png';
+                        }}
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t md:bg-gradient-to-r from-[#0c0c1e]/90 via-transparent to-transparent" />
                     </div>
-                    <h3 className="font-heading font-bold text-white text-xl mb-3">{product.name}</h3>
-                    <p className="text-[#8A8AA0] text-sm leading-relaxed mb-6">{product.shortDescription}</p>
-                    <div className="flex gap-3 flex-wrap">
-                      {product.websiteUrl && (
-                        <a href={product.websiteUrl} target="_blank" rel="noopener noreferrer"
-                          className="inline-flex items-center gap-1.5 text-sm px-4 py-2 rounded-full bg-cyan-400/10 text-cyan-400 border border-cyan-400/20 hover:bg-cyan-400/20 transition-all">
-                          Visit <ExternalLink size={12} />
-                        </a>
-                      )}
-                      <Link to="/contact" className="inline-flex items-center gap-1.5 text-sm px-4 py-2 rounded-full border border-white/10 text-[#8A8AA0] hover:text-white hover:border-white/20 transition-all">
-                        Request Demo
-                      </Link>
+
+                    {/* Text Details */}
+                    <div className="md:w-[58%] p-6 md:p-8 flex flex-col justify-between flex-grow">
+                      <div>
+                        <div className="flex items-center justify-between mb-4">
+                          <div className="text-xl w-9 h-9 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center">
+                            {product.icon || '📦'}
+                          </div>
+                          <Badge variant={product.status === 'live' ? 'live' : 'coming-soon'}>
+                            {product.status === 'live' ? '● Live' : '⏳ Coming Soon'}
+                          </Badge>
+                        </div>
+                        <h3 className="font-heading font-bold text-white text-lg md:text-xl mb-2 group-hover:text-cyan-400 transition-colors">
+                          {product.name}
+                        </h3>
+                        <p className="text-[#8A8AA0] text-xs leading-relaxed mb-6 font-light line-clamp-3">
+                          {product.shortDescription}
+                        </p>
+                      </div>
+                      <div className="flex gap-2.5 flex-wrap mt-auto">
+                        {product.websiteUrl && (
+                          <a href={product.websiteUrl} target="_blank" rel="noopener noreferrer"
+                            className="inline-flex items-center gap-1.5 text-xs px-4 py-2 rounded-full bg-cyan-400/15 text-cyan-400 border border-cyan-400/30 hover:bg-cyan-400/30 transition-all font-semibold">
+                            Visit Site <ExternalLink size={11} />
+                          </a>
+                        )}
+                        <Link to="/contact" className="inline-flex items-center gap-1.5 text-xs px-4 py-2 rounded-full border border-white/10 text-[#8A8AA0] hover:text-white hover:border-white/20 hover:bg-white/5 transition-all font-medium">
+                          Request Demo
+                        </Link>
+                      </div>
                     </div>
                   </div>
                 </TiltCard>
@@ -345,25 +695,42 @@ export default function Home({ data }) {
             {projects.map((project) => (
               <StaggerItem key={project._id}>
                 <TiltCard className="h-full group">
-                  <GlassCard className="h-full p-8 flex flex-col justify-between" glowColor="purple">
-                    <div>
-                      <Badge variant="purple" className="mb-4">{project.type}</Badge>
-                      <h3 className="font-heading font-bold text-white text-xl mb-3">{project.title}</h3>
-                      <p className="text-[#8A8AA0] text-sm leading-relaxed mb-6 font-light">
-                        {project.problem || `A premium ${project.type?.toLowerCase()} built with modern technology.`}
-                      </p>
+                  <GlassCard className="h-full !p-0 flex flex-col justify-between overflow-hidden" glowColor="purple">
+                    {/* Visual image banner */}
+                    <div className="relative h-44 w-full overflow-hidden flex-shrink-0">
+                      <img
+                        src={project.image || '/images/projects_mockup.png'}
+                        alt={project.title}
+                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                        onError={(e) => {
+                          e.currentTarget.onerror = null;
+                          e.currentTarget.src = '/images/projects_mockup.png';
+                        }}
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-[#0c0c1e]/90 via-[#0c0c1e]/20 to-transparent" />
                     </div>
-                    <div className="flex items-center gap-3 flex-wrap mt-auto">
-                      {project.url ? (
-                        <a href={project.url} target="_blank" rel="noopener noreferrer"
-                          className="inline-flex items-center gap-1.5 text-sm text-cyan-400 hover:text-cyan-300 font-medium transition-colors">
-                          View Project <ArrowRight size={14} />
-                        </a>
-                      ) : (
-                        <span className="inline-flex items-center gap-1 text-xs font-semibold bg-cyan-500/10 text-cyan-400 border border-cyan-400/20 px-3 py-1 rounded-full">
-                          📱 Mobile App Project
-                        </span>
-                      )}
+
+                    {/* Text Details */}
+                    <div className="p-6 flex flex-col flex-grow justify-between">
+                      <div>
+                        <Badge variant="purple" className="mb-3">{project.type}</Badge>
+                        <h3 className="font-heading font-bold text-white text-lg mb-2 group-hover:text-purple-300 transition-colors">{project.title}</h3>
+                        <p className="text-[#8A8AA0] text-xs leading-relaxed mb-4 font-light line-clamp-2">
+                          {project.problem || `A premium ${project.type?.toLowerCase()} built with modern technology.`}
+                        </p>
+                      </div>
+                      <div className="flex items-center gap-3 flex-wrap mt-auto">
+                        {project.url ? (
+                          <a href={project.url} target="_blank" rel="noopener noreferrer"
+                            className="inline-flex items-center gap-1.5 text-xs text-cyan-400 hover:text-cyan-300 font-medium transition-colors">
+                            View Project <ArrowRight size={14} />
+                          </a>
+                        ) : (
+                          <span className="inline-flex items-center gap-1 text-[11px] font-semibold bg-cyan-500/10 text-cyan-400 border border-cyan-400/20 px-3 py-1 rounded-full">
+                            📱 Mobile App Project
+                          </span>
+                        )}
+                      </div>
                     </div>
                   </GlassCard>
                 </TiltCard>
@@ -405,6 +772,131 @@ export default function Home({ data }) {
         </div>
       </section>
 
+
+
+      {/* ===== TECH STACK ===== */}
+      <section className="py-24 bg-grid overflow-hidden" id="tech-stack">
+        <div className="max-w-[1200px] mx-auto px-6">
+          <SectionHeader
+            label="Technology"
+            title={<>Built on <span className="text-gradient">Modern Tech</span></>}
+            subtitle="We use industry-leading technologies to build fast, scalable, and maintainable products."
+          />
+        </div>
+        {/* Marquee */}
+        <div className="relative overflow-hidden flex flex-col gap-5 py-4">
+          <div className="absolute left-0 top-0 bottom-0 w-24 bg-gradient-to-r from-[#070711] to-transparent z-10 pointer-events-none" />
+          <div className="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-[#070711] to-transparent z-10 pointer-events-none" />
+          
+          {/* Row 1: Forward Direction */}
+          <div className="flex gap-4 animate-marquee whitespace-nowrap cursor-pointer">
+            {[...techStack, ...techStack].map((tech, i) => (
+              <div
+                key={i}
+                className="inline-flex items-center gap-2.5 px-5 py-3 rounded-full glass border border-white/[0.08] text-[#8A8AA0] text-sm font-medium hover:text-white hover:border-cyan-400/30 transition-all duration-200 flex-shrink-0"
+              >
+                <span>{tech.icon}</span>
+                {tech.name}
+              </div>
+            ))}
+          </div>
+
+          {/* Row 2: Reverse Direction */}
+          <div className="flex gap-4 animate-marquee-reverse whitespace-nowrap cursor-pointer">
+            {[...techStack, ...techStack].reverse().map((tech, i) => (
+              <div
+                key={i}
+                className="inline-flex items-center gap-2.5 px-5 py-3 rounded-full glass border border-white/[0.08] text-[#8A8AA0] text-sm font-medium hover:text-white hover:border-cyan-400/30 transition-all duration-200 flex-shrink-0"
+              >
+                <span>{tech.icon}</span>
+                {tech.name}
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ===== TESTIMONIALS PREVIEW ===== */}
+      <section className="py-28 overflow-hidden" id="testimonials-preview">
+        <div className="max-w-[1200px] mx-auto px-6 mb-12">
+          <SectionHeader
+            label="Social Proof"
+            title={<>What Clients <span className="text-gradient">Say About Us</span></>}
+          />
+        </div>
+
+        {/* Infinite 3D Auto-Scrolling Testimonial Marquee */}
+        <div className="relative overflow-hidden py-6 select-none">
+          {/* Gradient fade edge masks for smooth premium visual blend */}
+          <div className="absolute left-0 top-0 bottom-0 w-24 md:w-36 bg-gradient-to-r from-[#070711] to-transparent z-20 pointer-events-none" />
+          <div className="absolute right-0 top-0 bottom-0 w-24 md:w-36 bg-gradient-to-l from-[#070711] to-transparent z-20 pointer-events-none" />
+
+          {/* Marquee Row - Infinite auto-scroll enabled on all screens */}
+          <div className="flex gap-6 animate-marquee-slow whitespace-nowrap cursor-pointer hover:[animation-play-state:paused] active:[animation-play-state:paused] py-4">
+            {[...testimonials, ...testimonials, ...testimonials, ...testimonials].map((t, index) => (
+              <div key={`${t._id}-${index}`} className="w-[300px] sm:w-[340px] md:w-[380px] shrink-0 h-full whitespace-normal inline-block">
+                <TiltCard
+                  intensity={12}
+                  className="h-full w-full"
+                >
+                  <div className="glass rounded-3xl border border-white/[0.08] p-8 relative overflow-hidden h-full flex flex-col justify-between transition-all duration-300 hover:border-cyan-400/30 hover:shadow-[0_15px_35px_rgba(0,212,255,0.15)] hover:bg-white/[0.02] group">
+                    {/* Glowing blur orb */}
+                    <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-cyan-500/10 to-purple-500/10 rounded-full blur-2xl group-hover:from-cyan-500/20 group-hover:to-purple-500/20 transition-all duration-500 pointer-events-none" />
+
+                    {/* Floating Quote Icon */}
+                    <Quote className="absolute right-6 top-6 text-cyan-400/5 w-14 h-14 pointer-events-none group-hover:text-cyan-400/10 group-hover:scale-110 transition-all duration-300" />
+
+                    {/* Star Ratings */}
+                    <div className="relative z-10 flex items-center justify-between mb-6">
+                      <div className="flex gap-0.5">
+                        {Array.from({ length: t.rating || 5 }).map((_, i) => (
+                          <Star key={i} size={15} className="text-amber-400 fill-amber-400 group-hover:scale-110 transition-transform duration-300" />
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Review text */}
+                    <div className="relative z-10 mb-8 min-h-[72px] flex items-center">
+                      <p className="text-[#c0c0d0] group-hover:text-white text-[0.925rem] leading-relaxed italic transition-colors duration-300">
+                        "{t.reviewText}"
+                      </p>
+                    </div>
+
+                    {/* Client Info Block */}
+                    <div className="relative z-10 flex items-center gap-4 border-t border-white/[0.05] pt-5 mt-auto">
+                      <div className="relative">
+                        <div className="w-12 h-12 rounded-full bg-gradient-to-br from-cyan-400 via-indigo-500 to-purple-600 flex items-center justify-center text-white font-bold text-base shadow-[0_4px_12px_rgba(0,212,255,0.2)] flex-shrink-0 group-hover:scale-105 transition-transform duration-300">
+                          {t.name?.charAt(0) || 'C'}
+                        </div>
+                        <div className="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-cyan-500 border-2 border-[#070711] flex items-center justify-center text-[10px] text-white">
+                          ✨
+                        </div>
+                      </div>
+                      <div>
+                        <div className="text-white font-semibold text-[0.95rem] tracking-wide group-hover:text-cyan-400 transition-colors duration-300">
+                          {t.name}
+                        </div>
+                        {t.businessName && (
+                          <div className="text-[#8A8AA0] text-xs font-medium mt-0.5 group-hover:text-purple-300 transition-colors duration-300">
+                            {t.businessName}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </TiltCard>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <ScrollReveal className="mt-10 flex justify-center">
+          <Link to="/testimonials" className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full font-semibold border border-cyan-400/30 text-cyan-400 hover:bg-cyan-400/10 hover:border-cyan-400 transition-all duration-200" id="view-all-testimonials-btn">
+            Read All Reviews <Star size={16} />
+          </Link>
+        </ScrollReveal>
+      </section>
+
       {/* ===== PROCESS ===== */}
       <section className="py-28" id="process">
         <div className="max-w-[1200px] mx-auto px-6">
@@ -429,98 +921,6 @@ export default function Home({ data }) {
               </ScrollReveal>
             ))}
           </div>
-        </div>
-      </section>
-
-      {/* ===== TECH STACK ===== */}
-      <section className="py-24 bg-grid overflow-hidden" id="tech-stack">
-        <div className="max-w-[1200px] mx-auto px-6">
-          <SectionHeader
-            label="Technology"
-            title={<>Built on <span className="text-gradient">Modern Tech</span></>}
-            subtitle="We use industry-leading technologies to build fast, scalable, and maintainable products."
-          />
-        </div>
-        {/* Marquee */}
-        <div className="relative overflow-hidden">
-          <div className="absolute left-0 top-0 bottom-0 w-24 bg-gradient-to-r from-[#070711] to-transparent z-10" />
-          <div className="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-[#070711] to-transparent z-10" />
-          <div className="flex gap-4 animate-marquee whitespace-nowrap">
-            {[...techStack, ...techStack].map((tech, i) => (
-              <div
-                key={i}
-                className="inline-flex items-center gap-2.5 px-5 py-3 rounded-full glass border border-white/[0.08] text-[#8A8AA0] text-sm font-medium hover:text-white hover:border-cyan-400/30 transition-all duration-200 flex-shrink-0"
-              >
-                <span>{tech.icon}</span>
-                {tech.name}
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ===== TESTIMONIALS PREVIEW ===== */}
-      <section className="py-28" id="testimonials-preview">
-        <div className="max-w-[1200px] mx-auto px-6">
-          <SectionHeader
-            label="Social Proof"
-            title={<>What Clients <span className="text-gradient">Say About Us</span></>}
-          />
-          <StaggerReveal className="grid grid-cols-1 md:grid-cols-3 gap-6" staggerDelay={0.1}>
-            {testimonials.map((t) => (
-              <StaggerItem key={t._id}>
-                <GlassCard className="p-7 h-full" glowColor="cyan">
-                  <div className="flex gap-0.5 mb-4">
-                    {Array.from({ length: t.rating || 5 }).map((_, i) => (
-                      <Star key={i} size={14} className="text-amber-400 fill-amber-400" />
-                    ))}
-                  </div>
-                  <p className="text-[#c0c0d0] text-sm leading-relaxed mb-6 italic">"{t.reviewText}"</p>
-                  <div className="flex items-center gap-3 mt-auto">
-                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-cyan-400 to-purple-500 flex items-center justify-center text-white font-bold text-sm flex-shrink-0">
-                      {t.name?.charAt(0) || 'C'}
-                    </div>
-                    <div>
-                      <div className="text-white font-semibold text-sm">{t.name}</div>
-                      {t.businessName && <div className="text-[#8A8AA0] text-xs">{t.businessName}</div>}
-                    </div>
-                  </div>
-                </GlassCard>
-              </StaggerItem>
-            ))}
-          </StaggerReveal>
-          <ScrollReveal className="mt-14 flex justify-center">
-            <Link to="/testimonials" className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full font-semibold border border-cyan-400/30 text-cyan-400 hover:bg-cyan-400/10 hover:border-cyan-400 transition-all duration-200" id="view-all-testimonials-btn">
-              Read All Reviews <Star size={16} />
-            </Link>
-          </ScrollReveal>
-        </div>
-      </section>
-
-      {/* ===== DEMOS PREVIEW ===== */}
-      <section className="py-28 bg-grid" id="demos-preview">
-        <div className="max-w-[1200px] mx-auto px-6">
-          <SectionHeader
-            label="Live Demos"
-            title={<>See Our Systems <span className="text-gradient">In Action</span></>}
-            subtitle="Interactive demos of real systems built by GenzTeck. Coming soon — request early access."
-          />
-          <StaggerReveal className="grid grid-cols-2 md:grid-cols-3 gap-5" staggerDelay={0.07}>
-            {['Astro Website + Admin Panel', 'Bakery E-commerce', 'CRM System', 'Booking System', 'Restaurant Ordering', 'Reminder System'].map((demo, i) => (
-              <StaggerItem key={i}>
-                <div className="glass rounded-2xl border border-white/[0.08] p-6 text-center relative overflow-hidden group hover:border-cyan-400/20 transition-all duration-300">
-                  <div className="absolute inset-0 bg-gradient-to-br from-cyan-400/3 to-purple-500/3 opacity-0 group-hover:opacity-100 transition-opacity" />
-                  <Badge variant="amber" className="mb-3">Coming Soon</Badge>
-                  <h4 className="text-white font-medium text-sm mt-2">{demo}</h4>
-                </div>
-              </StaggerItem>
-            ))}
-          </StaggerReveal>
-          <ScrollReveal className="mt-14 flex justify-center">
-            <Link to="/demos" className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full font-semibold border border-cyan-400/30 text-cyan-400 hover:bg-cyan-400/10 hover:border-cyan-400 transition-all duration-200" id="view-demos-btn">
-              Request a Demo <ArrowRight size={16} />
-            </Link>
-          </ScrollReveal>
         </div>
       </section>
 
@@ -595,6 +995,82 @@ export default function Home({ data }) {
           </ScrollReveal>
         </div>
       </section>
+
+      {/* Preview Customization Modal */}
+      <AnimatePresence>
+        {selectedDemo && (
+          <div className="fixed inset-0 z-[2000] flex items-center justify-center p-4">
+            {/* Backdrop */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setSelectedDemo(null)}
+              className="absolute inset-0 bg-black/85 backdrop-blur-md"
+            />
+            
+            {/* Modal Card */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 20 }}
+              transition={{ type: 'spring', duration: 0.5 }}
+              className="relative w-full max-w-md glass rounded-3xl border border-white/[0.08] p-8 overflow-hidden z-10"
+            >
+              <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/5 to-purple-500/5 pointer-events-none" />
+              
+              <button
+                onClick={() => setSelectedDemo(null)}
+                className="absolute top-4 right-4 text-[#8A8AA0] hover:text-white transition-colors cursor-pointer"
+              >
+                <X size={20} />
+              </button>
+
+              <div className="relative z-10">
+                <Badge variant="purple" className="mb-4">Live Customization</Badge>
+                <h3 className="text-2xl font-heading font-bold text-white mb-2">
+                  Preview {selectedDemo.title}
+                </h3>
+                <p className="text-[#8A8AA0] text-sm mb-6 leading-relaxed font-light">
+                  Enter your brand name below to see the template instantly personalized for your business.
+                </p>
+
+                <form onSubmit={handleLaunchPreview} className="space-y-6">
+                  <div className="space-y-2">
+                    <label className="block text-xs font-semibold text-[#8A8AA0] uppercase tracking-wider">
+                      Your Brand Name
+                    </label>
+                    <input
+                      type="text"
+                      value={brandNameInput}
+                      onChange={(e) => setBrandNameInput(e.target.value)}
+                      placeholder={`e.g. ${selectedDemo.defaultBrand}`}
+                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-[#5A5A7A] focus:outline-none focus:ring-2 focus:ring-purple-500/30 transition-all"
+                      autoFocus
+                    />
+                  </div>
+
+                  <div className="flex gap-3 pt-2">
+                    <button
+                      type="button"
+                      onClick={() => setSelectedDemo(null)}
+                      className="flex-1 py-3 rounded-xl border border-white/10 text-white font-semibold hover:bg-white/5 transition-all text-sm uppercase tracking-wider cursor-pointer"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      type="submit"
+                      className="flex-1 py-3 rounded-xl bg-gradient-to-r from-cyan-400 to-purple-500 text-white font-semibold shadow-btn-primary hover:shadow-btn-primary-hover hover:-translate-y-0.5 transition-all text-sm uppercase tracking-wider cursor-pointer"
+                    >
+                      Launch Preview
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

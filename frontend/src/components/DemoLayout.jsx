@@ -52,11 +52,7 @@ export default function DemoLayout({ children, defaultBrand = 'My Brand', slug =
                 {/* Left: Branding & Tag */}
                 <div className="flex items-center gap-3">
                   <Link to="/" className="flex items-center gap-2">
-                    <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-cyan-400 to-purple-500 flex items-center justify-center">
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-                        <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
-                      </svg>
-                    </div>
+                    <img src="/images/company-logo.png" alt="GenzTeck Logo" className="w-8 h-8 rounded-lg object-cover" />
                     <span className="font-heading font-bold text-sm tracking-tight hidden sm:inline text-white">
                       Genz<span className="text-cyan-400">Teck</span>
                     </span>

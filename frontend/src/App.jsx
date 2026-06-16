@@ -78,11 +78,7 @@ function LoadingScreen() {
           transition={{ duration: 0.5 }}
           className="flex items-center gap-3"
         >
-          <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-cyan-400 to-purple-500 flex items-center justify-center shadow-glow-cyan">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-              <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
-            </svg>
-          </div>
+          <img src="/images/company-logo.png" alt="GenzTeck Logo" className="w-12 h-12 rounded-2xl object-cover shadow-glow-cyan" />
           <span className="font-heading font-bold text-3xl text-white tracking-tight">
             Genz<span className="text-gradient">Teck</span>
           </span>

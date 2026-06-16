@@ -1,25 +1,24 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
-import { Menu, X, ChevronDown, Zap } from 'lucide-react';
+import { Menu, X, ChevronDown } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '../lib/utils';
 
 const navLinks = [
   { to: '/', label: 'Home' },
-  { to: '/about', label: 'About' },
   { to: '/services', label: 'Services' },
   { to: '/products', label: 'Products' },
   { to: '/projects', label: 'Portfolio' },
+  { to: '/demos', label: 'Demos' },
   {
     label: 'More',
     children: [
-      { to: '/demos', label: 'Demos' },
-      { to: '/demo-videos', label: 'Demo Videos' },
+      { to: '/about', label: 'About' },
       { to: '/testimonials', label: 'Testimonials' },
-      // { to: '/blog', label: 'Blog' },
+      { to: '/demo-videos', label: 'Demo Videos' },
+      { to: '/contact', label: 'Contact' },
     ]
-  },
-  { to: '/contact', label: 'Contact' },
+  }
 ];
 
 export default function Navbar({ settings }) {
@@ -56,9 +55,7 @@ export default function Navbar({ settings }) {
       <div className="max-w-[1200px] mx-auto px-6 h-[70px] flex items-center justify-between">
         {/* Logo */}
         <Link to="/" className="relative z-10 flex items-center gap-2">
-          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-cyan-400 to-purple-500 flex items-center justify-center">
-            <Zap size={16} className="text-white" />
-          </div>
+          <img src="/images/company-logo.png" alt="GenzTeck Logo" className="w-8 h-8 rounded-lg object-cover" />
           <span className="font-heading font-bold text-xl text-white">
             Genz<span className="text-gradient">Teck</span>
           </span>
@@ -148,13 +145,12 @@ export default function Navbar({ settings }) {
 
         {/* Desktop CTA */}
         <div className="hidden lg:flex items-center gap-3">
-          {/* Payment is temporarily hidden from the public site. */}
-          {/* <Link
-            to="/payment"
-            className="px-4 py-2 rounded-lg text-sm font-medium border border-white/[0.08] text-[#8A8AA0] hover:text-white hover:border-white/20 hover:bg-white/5 transition-all duration-200"
+          <Link
+            to="/demos"
+            className="px-5 py-2.5 rounded-full text-sm font-semibold border border-cyan-500/30 bg-cyan-500/5 text-cyan-400 hover:bg-cyan-500/10 hover:border-cyan-400/50 hover:text-white transition-all duration-200"
           >
-            Pay Now
-          </Link> */}
+            Browse Demos
+          </Link>
           <Link
             to="/contact"
             className="px-5 py-2.5 rounded-full text-sm font-semibold bg-gradient-to-r from-cyan-400 to-purple-500 text-white shadow-btn-primary hover:shadow-btn-primary-hover hover:-translate-y-0.5 transition-all duration-200"
@@ -236,13 +232,12 @@ export default function Navbar({ settings }) {
                 )
               )}
               <div className="pt-2 pb-1 flex flex-col gap-2">
-                {/* Payment is temporarily hidden from the public site. */}
-                {/* <Link
-                  to="/payment"
-                  className="flex items-center justify-center gap-2 px-4 py-3 rounded-xl border border-white/[0.08] text-sm font-medium text-[#8A8AA0] hover:text-white hover:bg-white/5 transition-all"
+                <Link
+                  to="/demos"
+                  className="flex items-center justify-center gap-2 px-4 py-3 rounded-xl text-sm font-semibold border border-cyan-500/20 bg-cyan-500/5 text-cyan-400 hover:bg-cyan-500/10 transition-all"
                 >
-                  💳 Pay Now
-                </Link> */}
+                  Browse Demos
+                </Link>
                 <Link
                   to="/contact"
                   className="flex items-center justify-center gap-2 px-4 py-3 rounded-xl text-sm font-semibold bg-gradient-to-r from-cyan-400 to-purple-500 text-white"

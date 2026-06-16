@@ -74,9 +74,7 @@ export default function Footer({ settings }) {
           {/* Brand column */}
           <div className="lg:col-span-2">
             <Link to="/" className="flex items-center gap-2 mb-5">
-              <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-cyan-400 to-purple-500 flex items-center justify-center">
-                <Zap size={18} className="text-white" />
-              </div>
+              <img src="/images/company-logo.png" alt="GenzTeck Logo" className="w-9 h-9 rounded-xl object-cover" />
               <span className="font-heading font-bold text-2xl text-white">
                 Genz<span className="text-gradient">Teck</span>
               </span>
